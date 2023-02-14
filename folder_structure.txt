@@ -1,0 +1,33 @@
+.
+├── app
+│   ├── api
+│   │   └── __init__.py
+│   ├── database.py
+│   ├── debug.py
+│   ├── extensions.py
+│   ├── __init__.py
+│   ├── models
+│   │   └── __init__.py
+│   └── Slack_APP
+│       ├── __init__.py
+│       ├── listners
+│       │   └── __init__.py
+│       └── views
+│           └── __init__.py
+├── folder_structure.txt
+├── learn_phase
+│   ├── another.py
+│   ├── app.py
+│   ├── bolt.py
+│   ├── coin.py
+│   ├── name.py
+│   └── quiz.py
+├── main.py
+├── ngrok
+├── __pycache__
+│   └── coin.cpython-38.pyc
+├── readme.md
+├── requirements.txt
+└── views.py
+
+8 directories, 22 files
