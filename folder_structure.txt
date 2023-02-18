@@ -1,19 +1,35 @@
 .
 ├── app
 │   ├── api
-│   │   └── __init__.py
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   │   └── __init__.cpython-38.pyc
+│   │   └── report
+│   │       ├── __init__.py
+│   │       ├── __pycache__
+│   │       │   ├── __init__.cpython-38.pyc
+│   │       │   └── views.cpython-38.pyc
+│   │       └── views.py
 │   ├── database.py
 │   ├── debug.py
 │   ├── extensions.py
 │   ├── __init__.py
 │   ├── models
 │   │   └── __init__.py
+│   ├── __pycache__
+│   │   ├── debug.cpython-38.pyc
+│   │   ├── extensions.cpython-38.pyc
+│   │   └── __init__.cpython-38.pyc
 │   └── Slack_APP
 │       ├── __init__.py
 │       ├── listners
 │       │   └── __init__.py
+│       ├── __pycache__
+│       │   └── __init__.cpython-38.pyc
 │       └── views
-│           └── __init__.py
+│           ├── __init__.py
+│           └── views.py
+├── config.py
 ├── folder_structure.txt
 ├── learn_phase
 │   ├── another.py
@@ -25,9 +41,10 @@
 ├── main.py
 ├── ngrok
 ├── __pycache__
-│   └── coin.cpython-38.pyc
+│   ├── coin.cpython-38.pyc
+│   ├── config.cpython-38.pyc
+│   └── main.cpython-38.pyc
 ├── readme.md
-├── requirements.txt
-└── views.py
+└── requirements.txt
 
-8 directories, 22 files
+13 directories, 34 files

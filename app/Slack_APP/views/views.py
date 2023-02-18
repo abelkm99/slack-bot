@@ -2,18 +2,18 @@ Register_User = {
 	"title": {
 		"type": "plain_text",
 		"text": "My App",
-		"emoji": true
+		"emoji": True 
 	},
 	"type": "modal",
 	"close": {
 		"type": "plain_text",
 		"text": "Cancel",
-		"emoji": true
+		"emoji": True 
 	},
 	"submit": {
 		"type": "plain_text",
 		"text": "Submit",
-		"emoji": true
+		"emoji": True 
 	},
 	"blocks": [
 		{
@@ -26,7 +26,7 @@ Register_User = {
 			"label": {
 				"type": "plain_text",
 				"text": "Full Name",
-				"emoji": true
+				"emoji": True 
 			}
 		},
 		{
@@ -36,14 +36,14 @@ Register_User = {
 				"placeholder": {
 					"type": "plain_text",
 					"text": "Select an item",
-					"emoji": true
+					"emoji": True 
 				},
 				"options": [
 					{
 						"text": {
 							"type": "plain_text",
 							"text": "Atrons",
-							"emoji": true
+							"emoji": True 
 						},
 						"value": "value-0"
 					},
@@ -51,7 +51,7 @@ Register_User = {
 						"text": {
 							"type": "plain_text",
 							"text": "RateEat",
-							"emoji": true
+							"emoji": True 
 						},
 						"value": "value-1"
 					},
@@ -59,7 +59,7 @@ Register_User = {
 						"text": {
 							"type": "plain_text",
 							"text": "Lab-Connect",
-							"emoji": true
+							"emoji": True 
 						},
 						"value": "value-2"
 					},
@@ -67,7 +67,7 @@ Register_User = {
 						"text": {
 							"type": "plain_text",
 							"text": "Portal",
-							"emoji": true
+							"emoji": True 
 						},
 						"value": "value-2"
 					}
@@ -77,7 +77,7 @@ Register_User = {
 			"label": {
 				"type": "plain_text",
 				"text": "Curently Working On",
-				"emoji": true
+				"emoji": True 
 			}
 		},
 		{
@@ -87,14 +87,14 @@ Register_User = {
 				"placeholder": {
 					"type": "plain_text",
 					"text": "Select an item",
-					"emoji": true
+					"emoji": True 
 				},
 				"options": [
 					{
 						"text": {
 							"type": "plain_text",
 							"text": "Full-Time",
-							"emoji": true
+							"emoji": True 
 						},
 						"value": "value-0"
 					},
@@ -102,7 +102,7 @@ Register_User = {
 						"text": {
 							"type": "plain_text",
 							"text": "Part-Time",
-							"emoji": true
+							"emoji": True 
 						},
 						"value": "value-1"
 					}
@@ -112,7 +112,7 @@ Register_User = {
 			"label": {
 				"type": "plain_text",
 				"text": "Job Type",
-				"emoji": true
+				"emoji": True 
 			}
 		}
 	]
