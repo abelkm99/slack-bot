@@ -63,7 +63,7 @@ def update_message(ack, say, body, respond):
     respond(message)
 
 
-view = {
+view1 = {
     "type": "modal",
     "callback_id": "this_is_my_callback_id",
     "title": {
@@ -180,13 +180,63 @@ def show_menu(client, body, shortcut, logger, ack):
             ),
         ],
     )
-    client.views_open(trigger_id=body['trigger_id'], view=view)
+    client.views_open(trigger_id=body['trigger_id'], view=view1)
 
 
 def handle_button(say, body, client, logger, ack):
-    ack()
-    channels = client.conversations_list()
     logger.info(body)
+    ack()
+    # Call views_update with the built-in client
+    client.views_update(
+        trigger_id=body["trigger_id"],
+        # Pass the view_id
+        view_id=body["view"]["id"],
+        # String that represents view state to protect against race conditions
+        hash=body["view"]["hash"],
+        # View payload with updated blocks
+        view={
+            "type": "modal",
+            # View identifier
+            "callback_id": "view_1",
+            "title": {"type": "plain_text", "text": "Updated modal"},
+            "close": {
+                "type": "plain_text",
+                "text": "Back",
+                "emoji": true
+            },
+            "submit": {
+                "type": "plain_text",
+                "text": "Submit",
+                "emoji": true
+            },
+            "blocks": [
+                {
+                    "type": "section",
+                    "text": {"type": "plain_text", "text": "You updated the modal!"}
+                },
+                {
+                    "type": "image",
+                    "image_url": "https://media.giphy.com/media/SVZGEcYt7brkFUyU90/giphy.gif",
+                    "alt_text": "Yay! The modal was updated"
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": "Welcome to a modal with _blocks_"
+                    },
+                    "accessory": {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": "Click me!"
+                        },
+                        "action_id": "button_abc"
+                    }
+                },
+            ]
+        }
+    )
 
     # say("hello mf")
 
@@ -254,7 +304,8 @@ def handle_modal_view(say):
         # ]
     )
     blocks = [
-        SectionBlock(text="This is a mrkdwn section block :ghost: *this is bold*, and ~this is crossed out~, and <https://google.com|this is a link>"),
+        SectionBlock(
+            text="This is a mrkdwn section block :ghost: *this is bold*, and ~this is crossed out~, and <https://google.com|this is a link>"),
         SectionBlock(text="Welcome Home!"),
         SectionBlock(
             text="What would you like to do?",
