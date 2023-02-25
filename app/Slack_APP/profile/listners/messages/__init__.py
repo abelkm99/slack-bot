@@ -2,11 +2,8 @@ from slack_sdk.models.views import View
 from slack_sdk.models.blocks import *
 true = True
 
-
 def message_hi_call_back(ack, say):
     say("I hope that this one works out")
-
-
 def reaction_added(ack, say, event, client, logger, body):
     print("="*200)
     print(body)

@@ -1,5 +1,5 @@
 from slack_bolt import App 
-from app.Slack_APP.listners import register_listeners
+from app.Slack_APP.profile import register_profile_features
 from config import *
 
 import logging
@@ -18,7 +18,8 @@ def log_request(logger, body, next):
     logger.debug(body)
     return next()
 
-register_listeners(app=slack_app)
+# register_listeners(app=slack_app)
+register_profile_features(app=slack_app)
 
 
 from slack_bolt.adapter.flask import SlackRequestHandler
