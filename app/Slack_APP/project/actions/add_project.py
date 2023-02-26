@@ -39,6 +39,7 @@ def handle_add_new_project(body, ack, logger, client, context):
             view = add_project_normal(project_name)
         )
 def create_new_channel(channel_name):
+    pass
     # channel_id = None
     # for channel in app.client.conversations_list()["channels"]:
     #     if channel["name"] == channel_name:
