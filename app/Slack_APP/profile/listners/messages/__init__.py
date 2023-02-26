@@ -1,6 +1,6 @@
 from slack_sdk.models.views import View
 from slack_sdk.models.blocks import *
-from app.Slack_APP.project.views.add_project import add_projet_view
+from app.Slack_APP.project.views.add_project import add_project_normal 
 true = True
 
 def message_hi_call_back(ack, say):
@@ -154,7 +154,7 @@ def show_menu(client, body, shortcut, logger, ack):
     ack()
     logger.info(body)
     logger.info(shortcut)
-    client.views_open(trigger_id=body['trigger_id'], view=add_projet_view)
+    client.views_open(trigger_id=body['trigger_id'], view=add_project_normal("Project Name"))
     return
     # i don't have a channel id
     # say("hello there")
