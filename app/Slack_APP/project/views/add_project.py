@@ -13,6 +13,7 @@ unique_identifier = "project_add_new_project_"
 
 add_projet_view = View(
     type="modal",
+    callback_id=f"{unique_identifier}submission_callback",
     title={
         "type": "plain_text",
         "text": "Attendance Tracker",
@@ -65,6 +66,7 @@ add_projet_view = View(
 
 def add_project_normal(written_name):
     return View(
+        callback_id=f"{unique_identifier}submission_callback",
         type="modal",
         title={
             "type": "plain_text",
@@ -120,6 +122,7 @@ def add_project_normal(written_name):
 def add_project_error(written_name):
     return View(
         type="modal",
+        callback_id=f"{unique_identifier}submission_callback",
         title={
             "type": "plain_text",
             "text": "Attendance Tracker",
