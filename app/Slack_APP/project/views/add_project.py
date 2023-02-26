@@ -22,7 +22,7 @@ add_projet_view = View(
     submit={
         "type": "plain_text",
         "text": "Submit",
-        "emoji": True
+        "emoji": True,
     },
     close={
         "type": "plain_text",
@@ -90,10 +90,13 @@ def add_project_normal(written_name):
                     "text": ":file_cabinet:  Add New Project :file_cabinet:",
                     "emoji": True
                 }
+                # text = PlainTextObject(type="plain_text",
+                # text = ""
+                # )
             ),
             DividerBlock(),
             SectionBlock(
-                text={"type": "mrkdwn", "text": "Add New Project"}
+                text=MarkdownTextObject(text="Add New Project this is new")
             ),
             ContextBlock(
                 elements=[

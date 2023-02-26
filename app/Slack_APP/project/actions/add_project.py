@@ -4,13 +4,7 @@ from app.Slack_APP.project.views import *
 
 
 def handle_add_new_project(body, ack, logger, client, context):
-
-    ack({
-            "response_action": "errors",
-            "errors": {
-                "project_add_new_project_block": "You may not select a date in the past."
-            }
-        })
+    ack()
     context['flask_app'].app_context().push()
     block_id = "project_add_new_project_block"
     action_name = "project_add_new_project_charachter_change_action"
@@ -38,8 +32,9 @@ def handle_add_new_project(body, ack, logger, client, context):
             # View payload with updated blocks
             view = add_project_normal(project_name)
         )
-def create_new_channel(channel_name):
-    pass
+
+# def create_new_channel(channel_name):
+#     pass
     # channel_id = None
     # for channel in app.client.conversations_list()["channels"]:
     #     if channel["name"] == channel_name:
@@ -52,15 +47,21 @@ def create_new_channel(channel_name):
     #     channel_id = response["channel"]["id"]
     #     logger.info(f"New channel created: #{channel_name}")
 
-def handle_view_submission_events(ack, body, logger):
+def handle_add_project_submission(ack, body, logger, context):
     ack()
-    time.sleep(3)
-    # check validy of the response in 3 second
-    ack({
-            "response_action": "errors",
-            "errors": {
-                "project_add_new_project_block": "You may not select a date in the past."
-            }
-        })
+    context['flask_app'].app_context().push()
+    block_id = "project_add_new_project_block"
+    action_name = "project_add_new_project_charachter_change_action"
+    project_name = body['view']['state']['values'][block_id][action_name]['value']
+    if get_project_by_name(name=project_name):
+        ack({
+                "response_action": "errors",
+                "errors": {
+                    "project_add_new_project_block": f"the project {project_name} already exists in the database."
+                }
+            })
+        return
+    project = Project(name = project_name)
+    project.save()
     logger.info(body)
 
