@@ -6,7 +6,7 @@ from slack_sdk.models.blocks import (
     PlainTextInputElement,
     SectionBlock,
     PlainTextObject,
-    MarkdownTextObject
+    MarkdownTextObject,
 )
 from slack_sdk.models.views import View
 unique_identifier = "project_add_new_project_"
@@ -82,7 +82,7 @@ def add_project_normal(written_name):
                 ),
                 label={"type": "plain_text",
                        "text": "Project Name", "emoji": True},
-                block_id=f"{unique_identifier}block",
+                block_id=f"{unique_identifier}block", 
             ),
         ]
     )

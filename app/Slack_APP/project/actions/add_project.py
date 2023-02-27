@@ -1,7 +1,5 @@
-import time
 from app.models.project import *
 from app.Slack_APP.project.views import *
-
 
 def handle_add_new_project(body, ack, logger, client, context):
     ack()
@@ -37,11 +35,12 @@ def handle_add_project_submission(ack, body, logger, context):
     block_id = "project_add_new_project_block"
     action_name = "project_add_new_project_charachter_change_action"
     project_name = body['view']['state']['values'][block_id][action_name]['value']
+    project_name = project_name.strip().capitalize()
     if get_project_by_name(name=project_name):
         ack({
                 "response_action": "errors",
                 "errors": {
-                    "project_add_new_project_block": f"the project {project_name} already exists in the database."
+                    "project_add_new_project_block": f"The project {project_name} already exists in the database."
                 }
             })
         return

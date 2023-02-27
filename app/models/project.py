@@ -4,6 +4,7 @@ class Project(db.Model):
     __tablename__ = 'project'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
+    archived = db.Column(db.Boolean, default=False, nullable=False)
 
 def add_project(name):
     if not get_project_by_name(name=name):
