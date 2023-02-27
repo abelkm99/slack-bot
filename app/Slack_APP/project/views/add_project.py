@@ -12,6 +12,31 @@ from slack_sdk.models.views import View
 unique_identifier = "project_add_new_project_"
 
 
+def project_added_succesfully_view(project_name):
+    return View(
+        type="modal",
+        title={
+            "type": "plain_text",
+            "text": "Attendance Tracker",
+            "emoji": True
+        },
+        close={
+            "type": "plain_text",
+            "text": "Close",
+            "emoji": True
+        },
+        blocks=[
+            HeaderBlock(
+                text=PlainTextObject(
+                    text=":file_cabinet:  Add New Project :file_cabinet:")
+            ),
+            SectionBlock(
+                text=MarkdownTextObject(text=f"Projet *{project_name}* Added Successfully")
+            ),
+        ]
+    )
+
+
 def add_project_normal(written_name):
     return View(
         callback_id=f"{unique_identifier}submission_callback",
@@ -61,6 +86,7 @@ def add_project_normal(written_name):
             ),
         ]
     )
+
 
 def add_project_error(written_name):
     return View(
