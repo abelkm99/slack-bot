@@ -15,22 +15,60 @@
 │   ├── extensions.py
 │   ├── __init__.py
 │   ├── models
-│   │   └── __init__.py
+│   │   ├── __init__.py
+│   │   ├── project.py
+│   │   ├── __pycache__
+│   │   │   ├── __init__.cpython-38.pyc
+│   │   │   ├── project.cpython-38.pyc
+│   │   │   ├── user.cpython-38.pyc
+│   │   │   └── User.cpython-38.pyc
+│   │   └── user.py
 │   ├── __pycache__
+│   │   ├── database.cpython-38.pyc
 │   │   ├── debug.cpython-38.pyc
 │   │   ├── extensions.cpython-38.pyc
 │   │   └── __init__.cpython-38.pyc
 │   └── Slack_APP
 │       ├── __init__.py
-│       ├── listners
-│       │   └── __init__.py
-│       ├── __pycache__
-│       │   └── __init__.cpython-38.pyc
-│       └── views
-│           ├── __init__.py
-│           └── views.py
+│       ├── profile
+│       │   ├── __init__.py
+│       │   ├── listners
+│       │   │   ├── events
+│       │   │   │   └── __init__.py
+│       │   │   ├── messages
+│       │   │   │   ├── __init__.py
+│       │   │   │   └── __pycache__
+│       │   │   │       └── __init__.cpython-38.pyc
+│       │   │   ├── __pycache__
+│       │   │   │   └── __init__.cpython-38.pyc
+│       │   │   └── shortcuts
+│       │   │       └── __init__.py
+│       │   ├── __pycache__
+│       │   │   └── __init__.cpython-38.pyc
+│       │   └── views
+│       │       └── __init__.py
+│       ├── project
+│       │   ├── actions
+│       │   │   ├── add_project.py
+│       │   │   ├── __init__.py
+│       │   │   └── __pycache__
+│       │   │       ├── add_project.cpython-38.pyc
+│       │   │       └── __init__.cpython-38.pyc
+│       │   ├── __init__.py
+│       │   ├── __pycache__
+│       │   │   └── __init__.cpython-38.pyc
+│       │   └── views
+│       │       ├── add_project.py
+│       │       ├── __init__.py
+│       │       └── __pycache__
+│       │           ├── add_project.cpython-38.pyc
+│       │           └── __init__.cpython-38.pyc
+│       └── __pycache__
+│           ├── create_instance.cpython-38.pyc
+│           └── __init__.cpython-38.pyc
 ├── config.py
 ├── folder_structure.txt
+├── imports.py
 ├── learn_phase
 │   ├── another.py
 │   ├── app.py
@@ -39,12 +77,27 @@
 │   ├── name.py
 │   └── quiz.py
 ├── main.py
+├── migrations
+│   ├── alembic.ini
+│   ├── env.py
+│   ├── __pycache__
+│   │   └── env.cpython-38.pyc
+│   ├── README
+│   ├── script.py.mako
+│   └── versions
+│       ├── 4dd2f686812b_.py
+│       ├── 75419e7a4e19_.py
+│       └── __pycache__
+│           ├── 4dd2f686812b_.cpython-38.pyc
+│           ├── 7451b08f75ae_.cpython-38.pyc
+│           └── 75419e7a4e19_.cpython-38.pyc
 ├── ngrok
 ├── __pycache__
 │   ├── coin.cpython-38.pyc
 │   ├── config.cpython-38.pyc
+│   ├── imports.cpython-38.pyc
 │   └── main.cpython-38.pyc
 ├── readme.md
 └── requirements.txt
 
-13 directories, 34 files
+31 directories, 69 files

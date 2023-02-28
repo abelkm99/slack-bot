@@ -1,18 +1,24 @@
-from slack_bolt import App
-from app import create_app, debug
 from flask import request
+from app import create_app, debug
 from config import ProdConfig, DevConfig, TestConfig
 from time import sleep, time
+CONFIG = DevConfig
+
+flask_app = create_app(CONFIG)
 
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-CONFIG = DevConfig
-flask_app = create_app(CONFIG)
 
 
 @flask_app.route("/")
-def hello(): return "hi there\n"
+def hello():
+    # this needs some clean UP
+    from app.models.project import Project
+    res = Project.query.all()
+    print(res)
+    return "hi there\n"
+
 
 from app.Slack_APP import handler 
 @flask_app.route("/slack/events", methods=["POST"])

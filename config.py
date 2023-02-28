@@ -21,7 +21,7 @@ class Config(object):
     DATABASE_URL = os.environ.get("DATABASE_URL")
     DATABASE_USERNAME = os.environ.get("DATABASE_USERNAME")
     DATABASE_PASSWORD = os.environ.get("DATABASE_PASSWORD")
-    DATABASE_NAME = DATABASE_USERNAME
+    DATABASE_NAME = os.environ.get("DATABASE_NAME") 
     print("password is", DATABASE_PASSWORD)
 
     APP_DIR = os.path.join(PROJECT_ROOT, 'app')  # This directory for APP_DIR
@@ -55,7 +55,7 @@ class DevConfig(Config):
     """Development configuration."""
     ENV = 'dev'
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = f'mysql://{Config.DATABASE_USERNAME}:{Config.DATABASE_PASSWORD}@{Config.DATABASE_URL}/{Config.DATABASE_NAME}'
+    # SQLALCHEMY_DATABASE_URI = f'mysql://{Config.DATABASE_USERNAME}:{Config.DATABASE_PASSWORD}@{Config.DATABASE_URL}/{Config.DATABASE_NAME}'
     SQLALCHEMY_DATABASE_URI = 'mysql://phpmyadmin:abella@localhost/attendance'
     print("database URL is", SQLALCHEMY_DATABASE_URI)
     # SQLALCHEMY_DATABASE_URI = 'postgresql://abella:abella@localhost/ims'
