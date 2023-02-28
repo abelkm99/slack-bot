@@ -1,7 +1,7 @@
 from app.models.project import *
 from app.Slack_APP.project.views import *
 
-def handle_add_new_project(body, ack, logger, client, context):
+def handle_add_new_project_charachter_change(body, ack, logger, client, context):
     ack()
     context['flask_app'].app_context().push()
     block_id = "project_add_new_project_block"

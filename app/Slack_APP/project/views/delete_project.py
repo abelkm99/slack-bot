@@ -25,7 +25,7 @@ header = HeaderBlock(
 )
 
 confirm_delete_header = HeaderBlock(
-    text=PlainTextObject(text="Confirm Delete Project", emoji=True)
+    text=PlainTextObject(text="🛑🛑 Confirm Delete Project 🛑🛑", emoji=True)
 )
 # Define the section block
 section = SectionBlock(
@@ -39,15 +39,16 @@ section = SectionBlock(
 def get_confirmation_sectionBlock(project_name):
     return SectionBlock(
         text=MarkdownTextObject(
-            text=f"*Are you sure you want to delete the project {project_name}*\n *this process is IRREVERSIBLE*",
+            text=f"*Are you sure you want to delete the project \t👉 {project_name} 👈*\n *this process is IRREVERSIBLE*",
         )
     )
 # Define the input block with a static select element
 
 
 def get_projets():
-    projects = Project.query.all()
+    projects = Project.query.filter_by(archived=0).all()
     return InputBlock(
+        block_id=f'{unique_identifier}selected_project_block',
         label=PlainTextObject(text="Project Name", emoji=True),
         element=StaticSelectElement(
             placeholder=PlainTextObject(text="Select a project", emoji=True),
@@ -78,6 +79,25 @@ def delete_project_confirmation_view(project_name):
         callback_id=f"{unique_identifier}confirm_delete_project",
         title=PlainTextObject(text="Attendance Tracker", emoji=True),
         submit=PlainTextObject(text="Continue", emoji=True),
-        blocks=[header, get_confirmation_sectionBlock(
-            project_name=project_name), divider, get_projets()]
+        blocks=[confirm_delete_header, get_confirmation_sectionBlock(
+            project_name=project_name)],
+        private_metadata=project_name
+    )
+
+
+def project_deleted_succesfully_view(project_name):
+    return View(
+        type="modal",
+        title=PlainTextObject(text="Attendance Tracker", emoji=True),
+        close=PlainTextObject(text="Close", emoji=True),
+        blocks=[
+            HeaderBlock(
+                text=PlainTextObject(text="✅Success")
+            ),
+            divider,
+            SectionBlock(
+                text=MarkdownTextObject(
+                    text=f"Projet *{project_name}* has been deleted Successfully")
+            ),
+        ]
     )

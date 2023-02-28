@@ -51,11 +51,13 @@ delete_project_section = SectionBlock(
 
 divider = DividerBlock()
 
+
 def get_project_menu():
     return View(
         type="modal",
         callback_id=f'{unique_identifier}view_callback',
         title=PlainTextObject(text="Attendance Monitoring", emoji=True),
         close=PlainTextObject(text="Cancel", emoji=True),
-        blocks=[header, divider, add_project_section, divider, update_project_section,divider, delete_project_section]
+        blocks=[header, divider, add_project_section, divider,
+                update_project_section, divider, delete_project_section]
     )
