@@ -15,23 +15,16 @@ unique_identifier = "project_add_new_project_"
 def project_added_succesfully_view(project_name):
     return View(
         type="modal",
-        title={
-            "type": "plain_text",
-            "text": "Attendance Tracker",
-            "emoji": True
-        },
-        close={
-            "type": "plain_text",
-            "text": "Close",
-            "emoji": True
-        },
+        title=PlainTextObject(text="Attendance Tracker", emoji=True),
+        close=PlainTextObject(text="Close", emoji=True),
         blocks=[
             HeaderBlock(
                 text=PlainTextObject(
                     text=":file_cabinet:  Add New Project :file_cabinet:")
             ),
             SectionBlock(
-                text=MarkdownTextObject(text=f"Projet *{project_name}* Added Successfully")
+                text=MarkdownTextObject(
+                    text=f"Projet *{project_name}* Added Successfully")
             ),
         ]
     )
@@ -41,21 +34,9 @@ def add_project_normal(project_name):
     return View(
         callback_id=f"{unique_identifier}submission_callback",
         type="modal",
-        title={
-            "type": "plain_text",
-            "text": "Attendance Tracker",
-            "emoji": True
-        },
-        submit={
-            "type": "plain_text",
-            "text": "Submit",
-            "emoji": True
-        },
-        close={
-            "type": "plain_text",
-            "text": "Back",
-            "emoji": True
-        },
+        title=PlainTextObject(text="Attendance Tracker", emoji=True),
+        close=PlainTextObject(text="Close", emoji=True),
+        submit=PlainTextObject(text="Submit", emoji=True),
         blocks=[
             HeaderBlock(
                 text=PlainTextObject(
@@ -63,7 +44,7 @@ def add_project_normal(project_name):
             ),
             DividerBlock(),
             SectionBlock(
-                text=MarkdownTextObject(text="Add New Project this is new")
+                text=MarkdownTextObject(text="Add New Project")
             ),
             ContextBlock(
                 elements=[
@@ -82,7 +63,7 @@ def add_project_normal(project_name):
                 ),
                 label={"type": "plain_text",
                        "text": "Project Name", "emoji": True},
-                block_id=f"{unique_identifier}block", 
+                block_id=f"{unique_identifier}block",
             ),
         ]
     )
@@ -92,39 +73,23 @@ def add_project_error(project_name):
     return View(
         type="modal",
         callback_id=f"{unique_identifier}submission_callback",
-        title={
-            "type": "plain_text",
-            "text": "Attendance Tracker",
-            "emoji": True
-        },
-        submit={
-            "type": "plain_text",
-            "text": "Submit",
-            "emoji": True
-        },
-        close={
-            "type": "plain_text",
-            "text": "Back",
-            "emoji": True
-        },
+        title=PlainTextObject(text="Attendance Tracker", emoji=True),
+        close=PlainTextObject(text="Close", emoji=True),
+        submit=PlainTextObject(text="Submit", emoji=True),
         blocks=[
             HeaderBlock(
-                text={
-                    "type": "plain_text",
-                    "text": ":file_cabinet:  Add New Project :file_cabinet:",
-                    "emoji": True
-                }
+                text=PlainTextObject(
+                    text=":file_cabinet:  Add New Project :file_cabinet:")
             ),
             DividerBlock(),
             SectionBlock(
-                text={"type": "mrkdwn", "text": "Add New Project"}
+                text=MarkdownTextObject(text="Add New Project")
             ),
             ContextBlock(
                 elements=[
-                    {
-                        "type": "mrkdwn",
-                        "text": "*:pushpin: project name has to be unique*"
-                    }
+                    MarkdownTextObject(
+                        text=":pushpin: project name has to be unique"
+                    )
                 ]
             ),
             InputBlock(
