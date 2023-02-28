@@ -88,7 +88,7 @@ def add_project_normal(project_name):
     )
 
 
-def add_project_error(written_name):
+def add_project_error(project_name):
     return View(
         type="modal",
         callback_id=f"{unique_identifier}submission_callback",
@@ -132,7 +132,7 @@ def add_project_error(written_name):
                 element=PlainTextInputElement(
                     dispatch_action_config={
                         "trigger_actions_on": ["on_character_entered"]},
-                    initial_value=written_name,
+                    initial_value=project_name,
                     action_id=f"{unique_identifier}charachter_change_action"
                 ),
                 label={"type": "plain_text",

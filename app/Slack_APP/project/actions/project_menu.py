@@ -10,4 +10,4 @@ def handle_open_new_project_view(ack, body, logger, client):
                       hash=body["view"]["hash"],
                       trigger_id=body["trigger_id"],
                       view=add_project_normal(project_name="project name")
-                      )
+)
