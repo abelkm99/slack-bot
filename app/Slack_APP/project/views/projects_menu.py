@@ -26,8 +26,7 @@ add_project_section = SectionBlock(
     text=MarkdownTextObject(text="Add a new Project"),
     accessory=ButtonElement(
         text=PlainTextObject(text="Add Project", emoji=True),
-        value="click_me_123",
-        action_id=f"{unique_identifier}",
+        action_id=f"{unique_identifier}add_new_project",
         style="primary"
     )
 )
@@ -36,8 +35,7 @@ update_project_section = SectionBlock(
     accessory=ButtonElement(
         text=PlainTextObject(
             text="Update Existing Project", emoji=True),
-        value="click_me_123",
-        action_id="button-action",
+        action_id=f"{unique_identifier}update_project",
         style="primary"
     )
 )
@@ -46,8 +44,7 @@ delete_project_section = SectionBlock(
         text="Delete or Archive a Project from any future use"),
     accessory=ButtonElement(
         text=PlainTextObject(text="Delete Project", emoji=True),
-        value="click_me_123",
-        action_id="button-action",
+        action_id=f"{unique_identifier}delete_project",
         style="danger"
     )
 )
@@ -57,6 +54,7 @@ divider = DividerBlock()
 def get_project_menu():
     return View(
         type="modal",
+        callback_id=f'{unique_identifier}view_callback',
         title=PlainTextObject(text="Attendance Monitoring", emoji=True),
         close=PlainTextObject(text="Cancel", emoji=True),
         blocks=[header, divider, add_project_section, divider, update_project_section,divider, delete_project_section]

@@ -37,7 +37,7 @@ def project_added_succesfully_view(project_name):
     )
 
 
-def add_project_normal(written_name):
+def add_project_normal(project_name):
     return View(
         callback_id=f"{unique_identifier}submission_callback",
         type="modal",
@@ -53,7 +53,7 @@ def add_project_normal(written_name):
         },
         close={
             "type": "plain_text",
-            "text": "Cancel",
+            "text": "Back",
             "emoji": True
         },
         blocks=[
@@ -77,7 +77,7 @@ def add_project_normal(written_name):
                 element=PlainTextInputElement(
                     dispatch_action_config={
                         "trigger_actions_on": ["on_character_entered"]},
-                    initial_value=written_name,
+                    initial_value=project_name,
                     action_id=f"{unique_identifier}charachter_change_action"
                 ),
                 label={"type": "plain_text",
@@ -104,7 +104,7 @@ def add_project_error(written_name):
         },
         close={
             "type": "plain_text",
-            "text": "Cancel",
+            "text": "Back",
             "emoji": True
         },
         blocks=[
