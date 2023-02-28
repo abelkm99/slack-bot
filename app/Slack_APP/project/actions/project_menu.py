@@ -12,8 +12,17 @@ def handle_open_new_project_view(ack, body, logger, client):
                       )
 
 
-def handle_open_update_project_view(ack, body, logger, client):
+def handle_open_update_project_view(ack, body, logger, client,context):
+    # ack()
+    context['flask_app'].app_context().push()
     ack()
+    logger.info(body)
+    client.views_push(view_id=body["view"]["id"],
+                      # String that represents view state to protect against race conditions
+                      hash=body["view"]["hash"],
+                      trigger_id=body["trigger_id"],
+                      view=edit_project_view()
+                      )
 
 
 def handle_open_delete_project_view(ack, body, logger, client, context):
