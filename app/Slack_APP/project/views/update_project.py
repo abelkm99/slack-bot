@@ -63,6 +63,24 @@ def edit_project_view():
         type="modal",
         callback_id=f"{unique_identifier}edit_project_view",
         title=PlainTextObject(text="Attendance Tracker", emoji=True),
-        submit=PlainTextObject(text="Edit", emoji=True),
+        submit=PlainTextObject(text="Update", emoji=True),
         blocks=[header, divider, get_projets(), divider, get_input_block()]
+    )
+
+
+def project_updated_succesfully_view(prev_project_name, new_project_name):
+    return View(
+        type="modal",
+        title=PlainTextObject(text="Attendance Tracker", emoji=True),
+        close=PlainTextObject(text="Close", emoji=True),
+        blocks=[
+            HeaderBlock(
+                text=PlainTextObject(text="✅Success")
+            ),
+            divider,
+            SectionBlock(
+                text=MarkdownTextObject(
+                    text=f"Projet *{prev_project_name}* has been updated to {new_project_name} successfully.")
+            ),
+        ]
     )
