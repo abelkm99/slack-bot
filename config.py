@@ -15,13 +15,14 @@ class Config(object):
     SLACK_SIGNING_SECRET = os.environ.get("SLACK_SIGNING_SECRET")
     SLACK_BOT_SECRET_KEY = os.environ.get('SLACK_BOT_SECRET_KEY')
     # set project path
-    PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))  # This directory for PROJECT ROOT
+    PROJECT_ROOT = os.path.abspath(os.path.dirname(
+        __file__))  # This directory for PROJECT ROOT
 
     # get the database URL
     DATABASE_URL = os.environ.get("DATABASE_URL")
     DATABASE_USERNAME = os.environ.get("DATABASE_USERNAME")
     DATABASE_PASSWORD = os.environ.get("DATABASE_PASSWORD")
-    DATABASE_NAME = os.environ.get("DATABASE_NAME") 
+    DATABASE_NAME = os.environ.get("DATABASE_NAME")
     print("password is", DATABASE_PASSWORD)
 
     APP_DIR = os.path.join(PROJECT_ROOT, 'app')  # This directory for APP_DIR
@@ -55,8 +56,8 @@ class DevConfig(Config):
     """Development configuration."""
     ENV = 'dev'
     DEBUG = True
-    # SQLALCHEMY_DATABASE_URI = f'mysql://{Config.DATABASE_USERNAME}:{Config.DATABASE_PASSWORD}@{Config.DATABASE_URL}/{Config.DATABASE_NAME}'
-    SQLALCHEMY_DATABASE_URI = 'mysql://phpmyadmin:abella@localhost/attendance'
+    SQLALCHEMY_DATABASE_URI = f'mysql://{Config.DATABASE_USERNAME}:{Config.DATABASE_PASSWORD}@{Config.DATABASE_URL}/{Config.DATABASE_NAME}'
+    # SQLALCHEMY_DATABASE_URI = 'mysql://phpmyadmin:abella@localhost/attendance'
     print("database URL is", SQLALCHEMY_DATABASE_URI)
     # SQLALCHEMY_DATABASE_URI = 'postgresql://abella:abella@localhost/ims'
     # SQLALCHEMY_DATABASE_URI = 'postgresql://abella:abella@localhost/ims-test'
