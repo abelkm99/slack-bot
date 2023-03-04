@@ -30,52 +30,43 @@
 │   │   └── __init__.cpython-38.pyc
 │   └── Slack_APP
 │       ├── __init__.py
-│       ├── profile
-│       │   ├── __init__.py
-│       │   ├── listners
-│       │   │   ├── events
-│       │   │   │   └── __init__.py
-│       │   │   ├── messages
-│       │   │   │   ├── __init__.py
-│       │   │   │   └── __pycache__
-│       │   │   │       └── __init__.cpython-38.pyc
-│       │   │   ├── __pycache__
-│       │   │   │   └── __init__.cpython-38.pyc
-│       │   │   └── shortcuts
-│       │   │       └── __init__.py
-│       │   ├── __pycache__
-│       │   │   └── __init__.cpython-38.pyc
-│       │   └── views
-│       │       └── __init__.py
 │       ├── project
 │       │   ├── actions
 │       │   │   ├── add_project.py
+│       │   │   ├── delete_project.py
 │       │   │   ├── __init__.py
-│       │   │   └── __pycache__
-│       │   │       ├── add_project.cpython-38.pyc
-│       │   │       └── __init__.cpython-38.pyc
+│       │   │   ├── project_menu.py
+│       │   │   ├── __pycache__
+│       │   │   │   ├── add_project.cpython-38.pyc
+│       │   │   │   ├── delete_project.cpython-38.pyc
+│       │   │   │   ├── __init__.cpython-38.pyc
+│       │   │   │   ├── project_menu.cpython-38.pyc
+│       │   │   │   └── update_project.cpython-38.pyc
+│       │   │   └── update_project.py
 │       │   ├── __init__.py
 │       │   ├── __pycache__
 │       │   │   └── __init__.cpython-38.pyc
+│       │   ├── shortcuts
+│       │   │   ├── __init__.py
+│       │   │   └── __pycache__
+│       │   │       └── __init__.cpython-38.pyc
 │       │   └── views
 │       │       ├── add_project.py
+│       │       ├── delete_project.py
 │       │       ├── __init__.py
-│       │       └── __pycache__
-│       │           ├── add_project.cpython-38.pyc
-│       │           └── __init__.cpython-38.pyc
+│       │       ├── projects_menu.py
+│       │       ├── __pycache__
+│       │       │   ├── add_project.cpython-38.pyc
+│       │       │   ├── delete_project.cpython-38.pyc
+│       │       │   ├── __init__.cpython-38.pyc
+│       │       │   ├── projects_menu.cpython-38.pyc
+│       │       │   └── update_project.cpython-38.pyc
+│       │       └── update_project.py
 │       └── __pycache__
 │           ├── create_instance.cpython-38.pyc
 │           └── __init__.cpython-38.pyc
 ├── config.py
 ├── folder_structure.txt
-├── imports.py
-├── learn_phase
-│   ├── another.py
-│   ├── app.py
-│   ├── bolt.py
-│   ├── coin.py
-│   ├── name.py
-│   └── quiz.py
 ├── main.py
 ├── migrations
 │   ├── alembic.ini
@@ -85,12 +76,11 @@
 │   ├── README
 │   ├── script.py.mako
 │   └── versions
-│       ├── 4dd2f686812b_.py
-│       ├── 75419e7a4e19_.py
+│       ├── 11e7ce4d9029_.py
+│       ├── 43c083cfde28_.py
 │       └── __pycache__
-│           ├── 4dd2f686812b_.cpython-38.pyc
-│           ├── 7451b08f75ae_.cpython-38.pyc
-│           └── 75419e7a4e19_.cpython-38.pyc
+│           ├── 11e7ce4d9029_.cpython-38.pyc
+│           └── 43c083cfde28_.cpython-38.pyc
 ├── ngrok
 ├── __pycache__
 │   ├── coin.cpython-38.pyc
@@ -100,4 +90,4 @@
 ├── readme.md
 └── requirements.txt
 
-31 directories, 69 files
+23 directories, 67 files
