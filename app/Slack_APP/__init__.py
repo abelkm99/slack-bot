@@ -2,7 +2,6 @@ from slack_bolt.adapter.flask import SlackRequestHandler
 from threading import local
 from flask import current_app
 from slack_bolt import App
-from app.Slack_APP.profile import register_profile_features
 from app.Slack_APP.project import register_project_features
 from app.Slack_APP.project.views.delete_project import delete_project_confirmation_view
 from config import *
@@ -32,7 +31,6 @@ def log_request(logger, body, next):
     return next()
 
 
-register_profile_features(app=slack_app)
 register_project_features(app=slack_app)
 
 # @slack_app.action("project_add_new_project_charachter_change_action")
