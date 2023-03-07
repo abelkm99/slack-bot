@@ -7,5 +7,5 @@ def handle_project_shorcut(ack, body, logger, client):
     client.views_open(trigger_id=body['trigger_id'], view=get_profile_menu())
 
 
-def profile_shortcuts(app):
+def register_shortcuts(app):
     app.shortcut("profile")(handle_project_shorcut)

@@ -1,3 +1,4 @@
+from app.models import get_active_projects
 from slack_sdk.models.blocks import (
     ContextBlock,
     DividerBlock,
@@ -30,7 +31,7 @@ section = SectionBlock(
 
 
 def get_projets():
-    projects = Project.query.filter_by(archived=0).all()
+    projects = get_active_projects() 
     return InputBlock(
         block_id=f'{unique_identifier}selected_project_block',
         label=PlainTextObject(
