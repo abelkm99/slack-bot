@@ -16,3 +16,10 @@ def add_project(name):
 
 def get_project_by_name(name):
     return Project.query.filter_by(name=name).first()
+
+def get_active_projects():
+    return Project.query.filter_by(archived=0).all()
+def get_archived_projects():
+    return Project.query.filter_by(archived=1).all()
+def get_all_projects():
+    return Project.query.all()

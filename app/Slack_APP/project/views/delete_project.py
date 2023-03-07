@@ -16,7 +16,7 @@ from slack_sdk.models.blocks import (
 
 from slack_sdk.models.views import View
 
-from app.models.project import Project
+from app.models.project import Project, get_active_projects
 unique_identifier = "project_delete_project_"
 
 # Define the header block
@@ -46,7 +46,7 @@ def get_confirmation_sectionBlock(project_name):
 
 
 def get_projets():
-    projects = Project.query.filter_by(archived=0).all()
+    projects = get_active_projects() 
     return InputBlock(
         block_id=f'{unique_identifier}selected_project_block',
         label=PlainTextObject(text="Project Name", emoji=True),
