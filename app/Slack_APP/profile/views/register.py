@@ -83,11 +83,21 @@ def get_employment_status(employement_status=None):
             StaticSelectElement(
                 placeholder=PlainTextObject(text="Job Type", emoji=True),
                 options=[
-                    Option(text="Full-Time", value="Full-time"),
+                    Option(text="Full-Time", value="Full-Time"),
                     Option(text="Part-Time", value="Part-Time"),
                     Option(text="Intern", value="Intern")
                 ],
                 action_id=f"{unique_identifier}emoloyement_status_action",
+            ) if employement_status == None else StaticSelectElement(
+                placeholder=PlainTextObject(text="Job Type", emoji=True),
+                options=[
+                    Option(text="Full-Time", value="Full-Time"),
+                    Option(text="Part-Time", value="Part-Time"),
+                    Option(text="Intern", value="Intern")
+                ],
+                action_id=f"{unique_identifier}emoloyement_status_action",
+                initial_option=Option(
+                    text=employement_status, value=employement_status),
             )
         ),
     )
@@ -110,20 +120,20 @@ def get_daily_plan_channel(daily_plan_channel=None):
     )
 
 
-def get_heads_up_channel(heads_up_channel=None):
+def get_headsup_channel(headsup_channel=None):
     return InputBlock(
         element=(ConversationSelectElement(
             placeholder="Select a Channel",
             filter={"include": ["public", "mpim"]},
-            action_id=f"{unique_identifier}heads_up_channel_action",
-        ) if heads_up_channel == None else ConversationSelectElement(
+            action_id=f"{unique_identifier}headsup_channel_action",
+        ) if headsup_channel == None else ConversationSelectElement(
             placeholder="Select a Channel",
             filter={"include": ["public", "mpim"]},
-            action_id=f"{unique_identifier}heads_up_channel_action",
-            initial_conversation=heads_up_channel
+            action_id=f"{unique_identifier}headsup_channel_action",
+            initial_conversation=headsup_channel
         )),
         label="Choose the channel to publish your Heads-Up :pleading_face: to:",
-        block_id=f"{unique_identifier}heads_up_channel_block",
+        block_id=f"{unique_identifier}headsup_channel_block",
     )
 
 
@@ -132,13 +142,14 @@ def user_registration_form(
     role=None,
     employement_status=None,
     daily_plan_channel=None,
-    heads_up_chanel=None
+    heads_up_chanel=None,
+    is_update = False
 ):
     return View(
         type="modal",
         callback_id=f'{unique_identifier}view_callback',
         title=PlainTextObject(text="Attendance Monitoring", emoji=True),
-        submit=PlainTextObject(text="Continue", emoji=True),
+        submit=PlainTextObject(text=("Register" if not is_update else "Update"), emoji=True),
         close=PlainTextObject(text="Cancel", emoji=True),
         blocks=[
             header,
@@ -146,7 +157,7 @@ def user_registration_form(
             get_role_input(role),
             get_employment_status(employement_status),
             get_daily_plan_channel(daily_plan_channel),
-            get_heads_up_channel(heads_up_chanel)
+            get_headsup_channel(heads_up_chanel)
         ]
     )
 

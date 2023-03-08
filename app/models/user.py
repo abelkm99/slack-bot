@@ -24,13 +24,13 @@ class User(db.Model):
 
 def add_new_user(slack_id,
                  full_name, role,
-                 employement_status, daily_plan_channel, heads_up_channel):
+                 employement_status, daily_plan_channel, headsup_channel):
     user = User(slack_id=slack_id,
                 full_name=full_name,
                 role=role,
                 employement_status=employement_status,
                 daily_plan_channel=daily_plan_channel,
-                headsup_channel=heads_up_channel)
+                headsup_channel=headsup_channel)
     user.save()
 
 def get_user_by_slack_id(slack_id):
