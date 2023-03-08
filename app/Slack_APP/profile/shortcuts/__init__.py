@@ -1,10 +1,27 @@
-from app.Slack_APP.profile.views import get_profile_menu
+from app.Slack_APP.profile.views import user_registered_succesfully_view, user_registration_form
+from app.models.user import get_user_by_slack_id
 
 
-def handle_project_shorcut(ack, body, logger, client):
+def handle_project_shorcut(ack, shortcut, logger, client, context, body):
     ack()
-    logger.info(body)
-    client.views_open(trigger_id=body['trigger_id'], view=get_profile_menu())
+    context['flask_app'].app_context().push()
+    slack_id = shortcut['user']['id']
+    user = get_user_by_slack_id(slack_id)
+    logger.debug(user)
+    client.views_open(trigger_id=body['trigger_id'], view=user_registration_form(
+        fullname=user.full_name,
+        role=user.role,
+        employement_status=user.employement_status,
+        daily_plan_channel=user.daily_plan_channel,
+        heads_up_chanel=user.headsup_channel
+    ))
+    return
+    if user:
+        client.views_open(
+            trigger_id=body['trigger_id'], view=user_registered_succesfully_view(fullname=slack_id))
+        return
+    client.views_open(trigger_id=body['trigger_id'], view=user_registration_form(
+        shortcut['user']['username']))
 
 
 def register_shortcuts(app):
