@@ -37,6 +37,8 @@ def select_project():
             placeholder=PlainTextObject(text="Select a project", emoji=True),
             options=[Option(text=project.name, value=project.name)
                      for project in projects],
+            initial_option=Option(
+                text=projects[0].name, value=projects[0].name),
             action_id="static_select-action",
         )
     )
@@ -51,7 +53,7 @@ lastCheckIn = ContextBlock(
 
 
 def get_checkIn_form(body):
-    print(json.dumps(body, indent=2))
+    # print(json.dumps(body, indent=2))
     return View(
         type="modal",
         callback_id=f'{unique_identifier}view_callback',
