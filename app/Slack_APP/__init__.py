@@ -4,7 +4,7 @@ from flask import current_app
 from slack_bolt import App
 from app.Slack_APP.profile import register_profile_features
 from app.Slack_APP.project import register_project_features
-from app.Slack_APP.profile.views import get_register_form
+from app.Slack_APP.profile.views import user_registration_form
 from config import *
 
 import logging
@@ -51,7 +51,7 @@ def handle_shortcuts(ack,shortcut, body, logger, client, context):
     logger.debug(shortcut)
     logger.debug(body)
     client.views_open(
-        trigger_id=body['trigger_id'], view=get_register_form(shortcut['user']['username']))
+        trigger_id=body['trigger_id'], view=user_registration_form(shortcut['user']['username']))
 
 
 @slack_app.view_closed("project_menu_view_callback")

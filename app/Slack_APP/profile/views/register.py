@@ -35,14 +35,18 @@ def get_full_name_input(fullname):
     )
 
 
-def get_role_input():
+def get_role_input(initial_value=None):
     return InputBlock(
         label=PlainTextObject(text="Role :briefcase:", emoji=True),
         block_id=f"{unique_identifier}role_input_block",
-        element=PlainTextInputElement(
+        element=(PlainTextInputElement(
             placeholder="Please Select Your Role at A2SV",
             action_id=f"{unique_identifier}role_input_action"
-        ),
+        ) if initial_value == None else PlainTextInputElement(
+            placeholder="Please Select Your Role at A2SV",
+            action_id=f"{unique_identifier}role_input_action",
+            initial_value=initial_value
+        ))
     )
 
 
@@ -70,48 +74,66 @@ def get_projets():
     )
 
 
-def get_employment_status():
+def get_employment_status(employement_status=None):
     return InputBlock(
         block_id=f'{unique_identifier}selected_employement_status_block',
         label=PlainTextObject(
             text="What is your Current Employment Status", emoji=True),
-        element=StaticSelectElement(
-            placeholder=PlainTextObject(text="Job Type", emoji=True),
-            options=[
-                Option(text="Full-Time", value="Full-time"),
-                Option(text="Part-Time", value="Part-Time"),
-                Option(text="Intern", value="Intern")
-            ],
-            action_id=f"{unique_identifier}emoloyement_status_action",
+        element=(
+            StaticSelectElement(
+                placeholder=PlainTextObject(text="Job Type", emoji=True),
+                options=[
+                    Option(text="Full-Time", value="Full-time"),
+                    Option(text="Part-Time", value="Part-Time"),
+                    Option(text="Intern", value="Intern")
+                ],
+                action_id=f"{unique_identifier}emoloyement_status_action",
+            )
         ),
     )
 
 
-def get_daily_plan_channel():
+def get_daily_plan_channel(daily_plan_channel=None):
     return InputBlock(
-        element=ConversationSelectElement(
+        element=(ConversationSelectElement(
             placeholder="Select a Channel",
             filter={"include": ["public", "mpim"]},
             action_id=f"{unique_identifier}daily_plan_channel_action",
-        ),
+        ) if daily_plan_channel == None else ConversationSelectElement(
+            placeholder="Select a Channel",
+            filter={"include": ["public", "mpim"]},
+            action_id=f"{unique_identifier}daily_plan_channel_action",
+            initial_conversation=daily_plan_channel
+        )),
         label="Choose the channel to publish your daily plan to:",
         block_id=f"{unique_identifier}daily_plan_channel_block",
     )
 
 
-def get_heads_up_channel():
+def get_heads_up_channel(heads_up_channel=None):
     return InputBlock(
-        element=ConversationSelectElement(
+        element=(ConversationSelectElement(
             placeholder="Select a Channel",
             filter={"include": ["public", "mpim"]},
             action_id=f"{unique_identifier}heads_up_channel_action",
-        ),
+        ) if heads_up_channel == None else ConversationSelectElement(
+            placeholder="Select a Channel",
+            filter={"include": ["public", "mpim"]},
+            action_id=f"{unique_identifier}heads_up_channel_action",
+            initial_conversation=heads_up_channel
+        )),
         label="Choose the channel to publish your Heads-Up :pleading_face: to:",
         block_id=f"{unique_identifier}heads_up_channel_block",
     )
 
 
-def get_register_form(fullname="abel"):
+def user_registration_form(
+    fullname=None,
+    role=None,
+    employement_status=None,
+    daily_plan_channel=None,
+    heads_up_chanel=None
+):
     return View(
         type="modal",
         callback_id=f'{unique_identifier}view_callback',
@@ -121,12 +143,16 @@ def get_register_form(fullname="abel"):
         blocks=[
             header,
             get_full_name_input(fullname),
-            get_role_input(),
-            get_employment_status(),
-            get_daily_plan_channel(),
-            get_heads_up_channel()
+            get_role_input(role),
+            get_employment_status(employement_status),
+            get_daily_plan_channel(daily_plan_channel),
+            get_heads_up_channel(heads_up_chanel)
         ]
     )
+
+
+def user_registration_form_edit():
+    pass
 
 
 def user_registered_succesfully_view(fullname):

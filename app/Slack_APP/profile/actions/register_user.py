@@ -1,5 +1,5 @@
 
-from app.Slack_APP.profile.views import get_register_form, user_registered_succesfully_view
+from app.Slack_APP.profile.views import user_registration_form, user_registered_succesfully_view
 from app.models.user import add_new_user, get_user_by_slack_id
 
 
@@ -16,7 +16,7 @@ def handel_user_registration(ack, body, logger, client, context):
         # String that represents view state to protect against race conditions
         hash=body["view"]["hash"],
         # View payload with updated blocks
-        view=get_register_form(body['user']['name'])
+        view=user_registration_form(body['user']['name'])
     )
 
 
