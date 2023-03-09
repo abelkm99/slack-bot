@@ -49,7 +49,7 @@ class ProdConfig(Config):
     """Production configuration."""
     ENV = 'prod'
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = 'mysql://phpmyadmin:abella@localhost/4k-labs-prod'
+    SQLALCHEMY_DATABASE_URI = 'mysql://phpmyadmin:abella@localhost/attendance'
 
 
 class DevConfig(Config):
@@ -69,7 +69,8 @@ class TestConfig(Config):
     """Test configuration."""
     TESTING = True
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://abella:abella@localhost/ims-test'
+    SQLALCHEMY_DATABASE_URI = 'mysql://phpmyadmin:abella@localhost/attendance_test'
+    # SQLALCHEMY_DATABASE_URI = 'postgresql://abella:abella@localhost/ims-test'
     # SQLALCHEMY_DATABASE_URI =  "postgresql+psycopg2://postgres:abella@127.0.0.1:5432/ims-test"
     CACHE_TYPE = 'simple'  # Can be "memcached", "redis", etc.
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(10 ** 6)
