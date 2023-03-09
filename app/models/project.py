@@ -6,6 +6,9 @@ class Project(db.Model):
     name = db.Column(db.String(50), unique=True, nullable=False)
     archived = db.Column(db.Boolean, default=False, nullable=False)
 
+    def __repr__(self) -> str:
+        return f"<Project {self.name}>"
+    
 def add_project(name):
     if not get_project_by_name(name=name):
         project = Project(name = name) 

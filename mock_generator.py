@@ -1,5 +1,5 @@
 from faker import Faker
-from app.models import db, Project, User, TimeSheet
+from app.models import *
 from app import create_app
 from config import *
 import random
