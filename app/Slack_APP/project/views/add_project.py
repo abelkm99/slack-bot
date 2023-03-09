@@ -58,8 +58,8 @@ def add_project_normal(project_name):
                 element=PlainTextInputElement(
                     dispatch_action_config={
                         "trigger_actions_on": ["on_character_entered"]},
-                    initial_value=project_name,
-                    action_id=f"{unique_identifier}charachter_change_action"
+                    action_id=f"{unique_identifier}charachter_change_action",
+                    placeholder=PlainTextObject(text="Project Name", emoji = True)
                 ),
                 label={"type": "plain_text",
                        "text": "Project Name", "emoji": True},
