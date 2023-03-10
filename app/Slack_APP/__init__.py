@@ -63,3 +63,4 @@ def handle_view_closed(ack, body, logger):
 
 
 handler = SlackRequestHandler(app=slack_app)
+
