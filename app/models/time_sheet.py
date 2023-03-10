@@ -130,7 +130,6 @@ def get_elapsed_time(slack_id) -> str:
 def get_state_for_date(start_date, end_date, slack_id):
     """Returns the time sheet records for a user within a date range in json format.
 
-
     Args:
         start_date (str): The start date of the range in YYYY-MM-DD format.
         end_date (str): The end date of the range in YYYY-MM-DD format.
