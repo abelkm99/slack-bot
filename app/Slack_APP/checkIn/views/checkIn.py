@@ -1,5 +1,5 @@
 from slack_sdk.models.views import View
-from slack_sdk.models.blocks import PlainTextObject, HeaderBlock, ContextBlock, DividerBlock, SectionBlock, StaticSelectElement, MarkdownTextObject, Option, InputBlock
+from slack_sdk.models.blocks import PlainTextObject, HeaderBlock, ContextBlock, DividerBlock, SectionBlock, StaticSelectElement, MarkdownTextObject, Option, InputBlock, ImageElement, RadioButtonsElement
 from app.models.project import Project
 import json
 import datetime
@@ -32,6 +32,7 @@ title = SectionBlock(
 def select_project():
     projects = Project.query.filter_by(archived=0).all()
     return InputBlock(
+        block_id=f'{unique_identifier}select_project',
         label=":clipboard: *Select your project*\n that you are partipated today",
         hint="that you are partipated today",
         element=StaticSelectElement(
@@ -47,7 +48,7 @@ def select_project():
 
 lastCheckIn = ContextBlock(
     elements=[
-        MarkdownTextObject(text=" *Last Check-In Time*\nOct 22-23"),
+        MarkdownTextObject(text=" *Last Check-In Time    *\nOct 22-23"),
         MarkdownTextObject(text=" *Minmium Hour Left*\n 3:00 HR")
         # MarkdownTextObject(text=" *Last Check-In Time*\nOct 22-23", "*Minmium Hour Left*\n 3:00 HR"),
     ])
@@ -60,7 +61,8 @@ def get_checkIn_form(body):
         callback_id=f'{unique_identifier}view_callback',
         title=PlainTextObject(text="Attendance Monitoring", emoji=True),
         close=PlainTextObject(text="Cancel", emoji=True),
-        submit=PlainTextObject(text="Check in", emoji=True),
+        submit=PlainTextObject(
+            text="Check in :smiley:", emoji=True),
         blocks=[
             header(body['user']['username']),
             subHeader,
@@ -68,6 +70,6 @@ def get_checkIn_form(body):
             title,
             select_project(),
             DividerBlock(),
-            # lastCheckIn
+            lastCheckIn
         ]
     )
