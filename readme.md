@@ -12,6 +12,7 @@ Roles
     [ ] profile
         [ ] register profile
         [ ] update profile
+        [ ] show profile Page
 
     [ ] checkIn-checkOut
         [ ] check IN
@@ -23,3 +24,5 @@ Roles
 
     [ ] heads UP
         [ ] should we handle it on
+
+[] https://apscheduler.readthedocs.io/en/3.x/userguide.html
