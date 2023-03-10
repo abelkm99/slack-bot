@@ -1,13 +1,24 @@
-- Register
+Roles
+    Admin
+    Project Manager
+    Member
 
-    create a user 
-    update
-    check int check out register 
-    when user check in monitor check_in check_out.
-    get the list of people who hasn't checked in nor checked out
+# components we should finish 
+    *notice* all of them should include error handling and success page views
+    [] projects
+        - add project
+        - delete project
+        - update project
+    [] profile
+        - register profile
+        - update profile
 
-
-    require the person is an admin
-    U are not an admin to access this command
-- update profile
-- checking checkout
+    [] checkIn-checkOut
+        - check IN
+        - check Out
+    [] daily plan
+        - write your daily plan
+        - update your daily plan
+        - should we add delete check out
+    [] heads UP
+        - should we handle it on
