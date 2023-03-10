@@ -1,5 +1,5 @@
 from app.database import db
-
+from app.extensions import ma
 class Project(db.Model):
     __tablename__ = 'project'
     id = db.Column(db.Integer, primary_key=True)
@@ -8,7 +8,16 @@ class Project(db.Model):
 
     def __repr__(self) -> str:
         return f"<Project {self.name}>"
-    
+    @property
+    def json(self):
+        return project_schema.dump(self)
+class ProjectSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Project 
+
+project_schema = ProjectSchema()
+projects_schema = ProjectSchema(many=True)
+
 def add_project(name):
     if not get_project_by_name(name=name):
         project = Project(name = name) 

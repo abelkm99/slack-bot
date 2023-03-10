@@ -1,6 +1,6 @@
 # create the flask app here
 from flask import Flask, request
-from app.extensions import bcrypt, db, cors, jwt, migrate
+from app.extensions import bcrypt, db, cors, jwt, migrate, ma
 from app.api import api_blueprint
 flask_app = Flask(__name__)
 
@@ -22,6 +22,7 @@ def register_extensions(app):
     cors.init_app(app,resources={r"*": {"origins": "*"}},supports_credentials=True)
     jwt.init_app(app)
     migrate.init_app(app,db)
+    ma.init_app(app=app)
     return app
 
 def register_blueprint(app):

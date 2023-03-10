@@ -1,4 +1,6 @@
 from app.database import db
+from app.extensions import ma
+from marshmallow import fields
 
 
 class User(db.Model):
@@ -20,7 +22,18 @@ class User(db.Model):
         self.daily_plan_channel = daily_plan_channel
         self.headsup_channel = headsup_channel
         self.is_admin = is_admin
+    def __repr__(self) -> str:
+        return f"<User {self.full_name}, ID {self.slack_id}>"
+    @property
+    def json(self):
+        return user_schema.dump(self)
+class UserSchema(ma.SQLAlchemyAutoSchema):
+    # time_sheets = fields.Nested('TimeSheetSchema', many=True)
+    class Meta:
+        model = User
 
+user_schema = UserSchema()
+users_schema = UserSchema(many=True)
 
 def add_new_user(slack_id,
                  full_name, role,
