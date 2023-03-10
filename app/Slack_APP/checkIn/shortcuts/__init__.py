@@ -14,4 +14,4 @@ def handle_checkIn_shortcut(ack, body, logger, client, context):
 
 
 def register_shortcuts(app):
-    app.shortcut('test_id')(handle_checkIn_shortcut)
+    app.shortcut('check-in')(handle_checkIn_shortcut)

@@ -2,9 +2,10 @@ from slack_sdk.models.views import View
 from slack_sdk.models.blocks import PlainTextObject, HeaderBlock, ContextBlock, DividerBlock, SectionBlock, StaticSelectElement, MarkdownTextObject, Option, InputBlock
 from app.models.project import Project
 import json
-
+import datetime
 
 unique_identifier = 'check-in_menu_'
+current_date = datetime.datetime.now().strftime("%B %d, %Y")
 
 
 def header(username):
@@ -20,7 +21,7 @@ subHeader = ContextBlock(
     elements=[
         MarkdownTextObject(
 
-            text="*March 06, 2022 * | *Full-Time * - UI-UX Member")
+            text=f"*{current_date} * | *Full-Time * - UI-UX Member")
     ]
 )
 
@@ -67,6 +68,6 @@ def get_checkIn_form(body):
             title,
             select_project(),
             DividerBlock(),
-            lastCheckIn
+            # lastCheckIn
         ]
     )
