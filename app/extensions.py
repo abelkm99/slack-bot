@@ -4,6 +4,7 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy,Model
+from flask_marshmallow import Marshmallow
 
 
 class CRUDMixin(Model):
@@ -50,3 +51,4 @@ migrate = Migrate()
 cache = Cache()
 cors = CORS()
 jwt = JWTManager()
+ma = Marshmallow()
