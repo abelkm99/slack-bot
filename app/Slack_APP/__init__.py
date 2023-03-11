@@ -3,9 +3,11 @@ from threading import local
 from flask import current_app
 from slack_bolt import App
 from app.Slack_APP.checkIn import register_checkIn_features
+from app.Slack_APP.dailyPlan.views.add_daily_plan import get_daily_plan_view
 from app.Slack_APP.profile import register_profile_features
 from app.Slack_APP.project import register_project_features
-from app.Slack_APP.profile.views import user_registration_form
+from app.Slack_APP.dailyPlan import register_daily_plan_features
+
 from config import *
 
 import logging
@@ -36,6 +38,7 @@ def log_request(logger, body, next):
 register_project_features(app=slack_app)
 register_profile_features(app=slack_app)
 register_checkIn_features(app=slack_app)
+register_daily_plan_features(app=slack_app)
 
 # @slack_app.action("project_add_new_project_charachter_change_action")
 # def handle_some_action(ack, body, logger):
@@ -53,14 +56,77 @@ def handle_shortcuts(ack,shortcut, body, logger, client, context):
     logger.debug(shortcut)
     logger.debug(body)
     client.views_open(
-        trigger_id=body['trigger_id'], view=user_registration_form(shortcut['user']['username']))
+        trigger_id=body['trigger_id'], view=get_daily_plan_view())
 
+# @slack_app.message("HOW")
+# def handle_message(event, say, logger):
+#     logger.debug(event)
+#     text = event["text"]
+#     user = event["user"]
+#     channel = event["channel"]
 
-@slack_app.view_closed("project_menu_view_callback")
-def handle_view_closed(ack, body, logger):
-    ack()
-    logger.info(body)
+#     # # Reply to the user with "Hi"
+#     import time
+#     message = say(f"Hi <@{user}>!")
+#     ts = message["ts"]
 
+#     # Wait for 20 seconds
+#     ## should i use should i use
+#     time.sleep(5)
 
+#     # Update the message with an attachment
+#     attachment = {
+#         "fallback": "How is your day going so far?",
+#         "title": "How is your day going so far?",
+#         "text": f"Hi <@{user}>, how's it going?",
+#         "color": "#3AA3E3",
+#         "footer": "My Bot",
+#         "ts": int(time.time())
+#     }
+#     updated_attachment = {
+#         "fallback": "Saturday's Report / Mar 4",
+#         "title": "Saturday's Report / Mar 4",
+#         "fields": [
+#             {
+#                 "title": "A2SV Development",
+#                 "value": "Sync with product team\nWork on user flows related to uploading materials\nSync with Selman",
+#                 "short": False
+#             },
+#             {
+#                 "title": "A2SV Problem Solving",
+#                 "value": "Solve leetcode daily question",
+#                 "short": False
+#             }
+#         ],
+#         "color": "#36a64f",
+#         "footer": "My Bot",
+#         "ts": event['ts']
+#     }
+#     updated_attachment = {
+#         "color": "#36a64f",
+#         "blocks": [
+#             {
+#                 "type": "section",
+#                 "text": {
+#                     "type": "mrkdwn",
+#                     "text": "Here's your updated attachment:"
+#                 }
+#             },
+#             {
+#                 "type": "section",
+#                 "fields": [
+#                     {
+#                         "type": "mrkdwn",
+#                         "text": "*Saturday's Report / Mar 4*\n• A2SV Development\nSync with product team\nWork on user flows related to uploading materials\nSync with Selman\n• A2SV Problem Solving\nSolve leetcode daily question"
+#                     }
+#                 ]
+#             }
+#         ]
+#     }
+#     slack_app.client.chat_update(
+#         channel=channel,
+#         ts=ts,
+#         attachments=[attachment, updated_attachment]
+#     )
 handler = SlackRequestHandler(app=slack_app)
 
