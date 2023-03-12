@@ -1,9 +1,11 @@
 from datetime import datetime, time, timedelta, date
-date_format = "%Y-%m-%dT%H:%M:%S"
+date_format = "%Y-%m-%d %H:%M:%S"
 
 
-def parse_date_time(date_string):
-    return datetime.strptime(date_string, date_format)
+def parse_date_time(date_string, date_format = date_format):
+    if isinstance(date_string, str):
+        return datetime.strptime(date_string, date_format)
+    return datetime.strftime(date_string, date_format)
 
 
 def get_day_range(start_date, end_date):

@@ -51,6 +51,7 @@ from app.extensions import ma
 from app.utils import *
 from marshmallow import fields
 
+
 class DailyPlan(db.Model):
     __tablename__ = "daily_plan"
     id = db.Column(db.Integer, primary_key=True)
@@ -62,11 +63,22 @@ class DailyPlan(db.Model):
 
     tasks = db.relationship('Task', backref='daily_plan')
 
+
 class Task(db.Model):
     __tablename__ = "task"
     id = db.Column(db.Integer, primary_key=True)
     daily_plan_id = db.Column(db.Integer, db.ForeignKey(
         'daily_plan.id'
-    ), nullable = False)
-    task = db.Column(db.String(200), nullable = False)
-    state = db.Column(db.Integer, nullable = False, default = 0)
+    ), nullable=False)
+    task = db.Column(db.String(200), nullable=False)
+    type = db.Column(db.String(50), nullable=False)
+    state = db.Column(db.Integer, nullable=False, default=0)
+
+
+def get_previous_plan(slack_id):
+    current_dt = datetime.now()
+    daily_plan = DailyPlan.query.filter_by(slack_id = slack_id)\
+        .filter(DailyPlan.time_published < current_dt)\
+        .order_by(DailyPlan.time_published.desc())\
+        .first()
+    return daily_plan

@@ -50,29 +50,102 @@ register_daily_plan_features(app=slack_app)
 
 
 @slack_app.shortcut("check_modal")
-def handle_shortcuts(ack,shortcut, body, logger, client, context):
+def handle_shortcuts(ack, shortcut, body, logger, client, context):
     context['flask_app'].app_context().push()
     ack()
     logger.debug(shortcut)
     logger.debug(body)
     client.views_open(
-        trigger_id=body['trigger_id'], view=get_daily_plan_view())
+        trigger_id=body['trigger_id'], view=get_daily_plan_view(body['user']['id']))
 
-# @slack_app.message("HOW")
-# def handle_message(event, say, logger):
-#     logger.debug(event)
-#     text = event["text"]
-#     user = event["user"]
-#     channel = event["channel"]
 
-#     # # Reply to the user with "Hi"
-#     import time
-#     message = say(f"Hi <@{user}>!")
+@slack_app.message("HOW")
+def handle_message(event, say, logger, client):
+    logger.debug(event)
+    text = event["text"]
+    user = event["user"]
+    channel = event["channel"]
+
+    # # Reply to the user with "Hi"
+    import time
+
+    user_id = "U04LMCX3U3G"  # replace this with your Slack user ID
+    response = slack_app.client.conversations_open(users=[user_id])
+    channel_id = response["channel"]["id"]
+
+    attachment = {
+        "fallback": "How is your day going so far?",
+        "title": "How is your day going so far?",
+        "color": "#3AA3E3",
+        "footer": "My Bot",
+        "ts": int(time.time())
+    }
+
+    updated_attachment = {
+        "fallback": "Saturday's Report / Mar 4",
+        "title": "Saturday's Report / Mar 4",
+        "fields": [
+            {
+                "title": "A2SV Development",
+                "value": "Sync with product team\nWork on user flows related to uploading materials\nSync with Selman",
+                "short": False
+            },
+            {
+                "title": "A2SV Problem Solving",
+                "value": "Solve leetcode daily question",
+                "short": False
+            }
+        ],
+        "color": "#36a64f",
+        "footer": "My Bot",
+        "ts": int(time.time())
+    }
+    updated_attachment = {
+        "color": "#36a64f",
+        "blocks": [
+            {
+                "type": "section",
+                "fields": [
+                    {
+                        "type": "mrkdwn",
+                        "text": "                                 *-            ABEL             -* \n Here's :"
+                    },
+                    {
+                        "type": "mrkdwn",
+                        "text": "                                 *-            ABEL             -* \n Here's your updated attachment:"
+                    },
+                    {
+                        "type": "mrkdwn",
+                        "text": "                                 *-            ABEL             -* \n Here's :"
+                    },
+                    {
+                        "type": "mrkdwn",
+                        "text": "                                 *-            ABEL             -* \n Here's your updated attachment:"
+                    }
+                ]
+            },
+            {
+                "type": "section",
+                "fields": [
+                    {
+                        "type": "mrkdwn",
+                        "text": "*Saturday's Report / Mar 4*\n• A2SV Development\nSync with product team\nWork on user flows related to uploading materials\nSync with Selman\n• A2SV Problem Solving\nSolve leetcode daily question"
+                    }
+                ]
+            }
+        ]
+    }
+    response = client.chat_postMessage(
+        channel="#general",
+        text="Daily Tasks Report",
+        attachments=[attachment, updated_attachment]
+    )
 #     ts = message["ts"]
 
 #     # Wait for 20 seconds
 #     ## should i use should i use
 #     time.sleep(5)
+
 
 #     # Update the message with an attachment
 #     attachment = {
@@ -83,50 +156,9 @@ def handle_shortcuts(ack,shortcut, body, logger, client, context):
 #         "footer": "My Bot",
 #         "ts": int(time.time())
 #     }
-#     updated_attachment = {
-#         "fallback": "Saturday's Report / Mar 4",
-#         "title": "Saturday's Report / Mar 4",
-#         "fields": [
-#             {
-#                 "title": "A2SV Development",
-#                 "value": "Sync with product team\nWork on user flows related to uploading materials\nSync with Selman",
-#                 "short": False
-#             },
-#             {
-#                 "title": "A2SV Problem Solving",
-#                 "value": "Solve leetcode daily question",
-#                 "short": False
-#             }
-#         ],
-#         "color": "#36a64f",
-#         "footer": "My Bot",
-#         "ts": event['ts']
-#     }
-#     updated_attachment = {
-#         "color": "#36a64f",
-#         "blocks": [
-#             {
-#                 "type": "section",
-#                 "text": {
-#                     "type": "mrkdwn",
-#                     "text": "Here's your updated attachment:"
-#                 }
-#             },
-#             {
-#                 "type": "section",
-#                 "fields": [
-#                     {
-#                         "type": "mrkdwn",
-#                         "text": "*Saturday's Report / Mar 4*\n• A2SV Development\nSync with product team\nWork on user flows related to uploading materials\nSync with Selman\n• A2SV Problem Solving\nSolve leetcode daily question"
-#                     }
-#                 ]
-#             }
-#         ]
-#     }
 #     slack_app.client.chat_update(
 #         channel=channel,
 #         ts=ts,
 #         attachments=[attachment, updated_attachment]
 #     )
 handler = SlackRequestHandler(app=slack_app)
-

@@ -92,8 +92,9 @@ def create_daily_plan(slack_id):
         message_id = fake.word()
     )
 
-    for i in range(3):
-        dp.tasks.append(Task(task = fake.job()))
+    for i in range(random.randint(2, 6)):
+        task_types = ["DEVELOPMENT", "PROBLEM_SOLVING"]
+        dp.tasks.append(Task(task = fake.job(), type = fake.random_element(task_types)))
     dp.save()
     return dp
 def push_one_day_back():
