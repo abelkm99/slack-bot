@@ -17,6 +17,7 @@ def clear_database():
     except:
         db.session.rollback()
 
+
 def create_projects(count=5):
     # Generate mock projects
     projects = []
@@ -57,6 +58,7 @@ def create_users(count=2):
     except:
         db.session.rollback()
 
+
 def create_time_sheet(count=100):
     projects = Project.query.all()
     users = User.query.all()
@@ -79,3 +81,26 @@ def create_time_sheet(count=100):
         db.session.commit()
     except:
         db.session.rollback()
+
+
+def create_daily_plan(slack_id):
+    user = User.query.filter_by(slack_id=slack_id).first()
+    dp = DailyPlan(
+        slack_id=user.slack_id,
+        channel_id=user.daily_plan_channel,
+        time_published = datetime.now(),
+        message_id = fake.word()
+    )
+
+    for i in range(3):
+        dp.tasks.append(Task(task = fake.job()))
+    dp.save()
+    return dp
+def push_one_day_back():
+    dps = DailyPlan.query.all()
+    print(dps)
+    for dp in dps:
+        dp.time_published = dp.time_published - timedelta(days=1)
+        dp.update(commit = False)
+    db.session.commit()
+    pass

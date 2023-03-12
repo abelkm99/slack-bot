@@ -58,7 +58,7 @@ class DailyPlan(db.Model):
         'user.slack_id'), nullable=False)
     channel_id = db.Column(db.String(50), nullable=False)
     time_published = db.Column(db.DateTime, nullable=False)
-    message_id = db.Column(db.String(50), nullable=True)
+    message_id = db.Column(db.String(50), nullable=False)
 
     tasks = db.relationship('Task', backref='daily_plan')
 
