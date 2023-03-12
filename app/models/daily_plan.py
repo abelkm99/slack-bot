@@ -60,6 +60,8 @@ class DailyPlan(db.Model):
     time_published = db.Column(db.DateTime, nullable=False)
     message_id = db.Column(db.String(50), nullable=True)
 
+    tasks = db.relationship('Task', backref='daily_plan')
+
 class Task(db.Model):
     __tablename__ = "task"
     id = db.Column(db.Integer, primary_key=True)
