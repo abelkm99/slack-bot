@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from app.extensions import ma
 from app.utils import *
 from marshmallow import fields
+import time
 
 from app.models.user import UserSchema
 
@@ -108,7 +109,7 @@ def check_out(slack_id):
     }
 
 
-def get_elapsed_time(slack_id) -> str:
+def get_elapsed_time(slack_id):
     # FIXME instead of slack_id take the result object from the function
     """Returns the elapsed time since the last check-in of a user.
 
@@ -120,11 +121,13 @@ def get_elapsed_time(slack_id) -> str:
         print(convert_seconds(12319)) -> 03:25:19
     Raises:
         ValueError: If slack_id is invalid or not found.
-        
+
     """
     result = get_status(slack_id=slack_id)
     current_time = datetime.now()
-    return convert_seconds((current_time - result.check_in_time).totalseconds())
+    diff = current_time - result.check_in_time
+    return convert_second(diff.total_seconds())
+    # return convert_seconds((current_time - result.check_in_time).totalseconds())
 
 
 def get_state_for_date(start_date, end_date, slack_id):
@@ -137,7 +140,7 @@ def get_state_for_date(start_date, end_date, slack_id):
 
     Returns:
         list: A list of dictionaries representing the time sheet records.
-        e.g 
+        e.g
 [{'elapsed_time': 984,
   'check_in_time': '2023-03-09T17:57:26',
   'check_out_time': '2023-03-09T18:13:50',
@@ -162,3 +165,8 @@ def get_state_for_date(start_date, end_date, slack_id):
         .filter(TimeSheet.check_in_time >= start_date
                 and TimeSheet.check_out_time <= end_date).all()
     return TimeSheetSchema(many=True, exclude=["user"]).dump(history)
+
+
+def convert_second(seconds) -> str:
+    time_str = time.strftime("%H:%M:%S", time.gmtime(seconds))
+    return time_str
