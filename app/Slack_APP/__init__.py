@@ -138,7 +138,7 @@ def handle_message(event, say, logger, client):
     response = client.chat_postMessage(
         channel="#general",
         text="Daily Tasks Report",
-        attachments=[attachment, updated_attachment]
+        attachments=[attachment, updated_attachment, attachment, updated_attachment]
     )
 #     ts = message["ts"]
 
