@@ -24,5 +24,7 @@ Roles
 
     [ ] heads UP
         [ ] should we handle it on
+    [ ] refactor move all the database operations outside of the SLACK APP
+    [ ] Unit Test on those functions 
 # read more about
 [] https://apscheduler.readthedocs.io/en/3.x/userguide.html
