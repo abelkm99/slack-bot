@@ -46,5 +46,5 @@ def add_new_user(slack_id,
                 headsup_channel=headsup_channel)
     user.save()
 
-def get_user_by_slack_id(slack_id):
+def get_user_by_slack_id(slack_id) -> User:
     return User.query.filter_by(slack_id = slack_id).first()

@@ -42,6 +42,9 @@
                     build the components but this time it has to be populated
                     SO I will have this database where i would post the result
 '''
+from typing import List, Optional
+
+from sqlalchemy import func
 from app.database import db
 from app.models.project import Project, ProjectSchema
 from app.models.user import User, UserSchema
@@ -51,6 +54,7 @@ from app.extensions import ma
 from app.utils import *
 from marshmallow import fields
 
+task_types = ["DEVELOPMENT", "PROBLEM_SOLVING"]
 
 class DailyPlan(db.Model):
     __tablename__ = "daily_plan"
@@ -75,10 +79,59 @@ class Task(db.Model):
     state = db.Column(db.Integer, nullable=False, default=0)
 
 
-def get_previous_plan(slack_id):
-    current_dt = datetime.now()
-    daily_plan = DailyPlan.query.filter_by(slack_id = slack_id)\
+def get_previous_plan(slack_id) -> DailyPlan:
+    current_dt = datetime.combine(datetime.now(), time.min)
+    daily_plan = DailyPlan.query.filter_by(slack_id=slack_id)\
         .filter(DailyPlan.time_published < current_dt)\
         .order_by(DailyPlan.time_published.desc())\
         .first()
     return daily_plan
+
+
+def create_daily_plan(user: User,
+                      message_id: str,
+                      developments: List[str],
+                      problem_solvings: List[str]
+                      ) -> DailyPlan:
+    # check if is the first one
+    # else delete all the previous one
+    dp = DailyPlan(
+        slack_id=user.slack_id,
+        channel_id=user.daily_plan_channel,
+        time_published=datetime.now(),
+        message_id=message_id
+    )
+    for task in developments:
+        dp.tasks.append(Task(task=task, type=task_types[0]))
+    for task in problem_solvings:
+        dp.tasks.append(Task(task=task, type=task_types[1]))
+    return dp
+
+
+def update_daily_plan_tasks(
+    current_daily_plan: DailyPlan, developments: List[str],
+    problem_solvings: List[str]
+):
+    Task.query.filter_by(daily_plan_id=current_daily_plan.id).delete()
+    for task in developments:
+        current_daily_plan.tasks.append(Task(task=task, type=task_types[0]))
+    for task in problem_solvings:
+        current_daily_plan.tasks.append(Task(task=task, type=task_types[1]))
+    return current_daily_plan 
+
+
+def update_prev_date_state(prev_plan: DailyPlan, completed_task_ids: set) -> DailyPlan:
+    for task in prev_plan.tasks:
+        print("check", task, completed_task_ids)
+        task.state = 1
+        if task.id in completed_task_ids:
+            task.state = 1
+        else:
+            task.state = 0
+        print(task.state)
+    return prev_plan
+
+
+def get_daily_plan_for_today(user: User) -> Optional[DailyPlan]:
+    today = date.today()
+    return DailyPlan.query.filter_by(slack_id=user.slack_id).filter(func.date(DailyPlan.time_published) == today).first()

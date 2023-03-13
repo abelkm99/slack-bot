@@ -1,9 +1,11 @@
+import datetime
 from slack_bolt.adapter.flask import SlackRequestHandler
 from threading import local
 from flask import current_app
 from slack_bolt import App
 from app.Slack_APP.checkIn import register_checkIn_features
 from app.Slack_APP.dailyPlan.views.add_daily_plan import get_daily_plan_view
+from app.Slack_APP.dailyPlan.views.daily_plan_attachement import build_daily_plan_attachement
 from app.Slack_APP.profile import register_profile_features
 from app.Slack_APP.project import register_project_features
 from app.Slack_APP.dailyPlan import register_daily_plan_features
@@ -60,7 +62,8 @@ def handle_shortcuts(ack, shortcut, body, logger, client, context):
 
 
 @slack_app.message("HOW")
-def handle_message(event, say, logger, client):
+def handle_message(event, say, logger, client, context):
+    context['flask_app'].app_context().push()
     logger.debug(event)
     text = event["text"]
     user = event["user"]
@@ -68,6 +71,13 @@ def handle_message(event, say, logger, client):
 
     # # Reply to the user with "Hi"
     import time
+
+    response = client.users_info(user="U04LMCX3U3G")
+    user = response["user"]
+    profile_pic_url = user["profile"]["image_512"]
+
+    # print(user)
+    # say(profile_pic_url)
 
     user_id = "U04LMCX3U3G"  # replace this with your Slack user ID
     response = slack_app.client.conversations_open(users=[user_id])
@@ -100,45 +110,30 @@ def handle_message(event, say, logger, client):
         "footer": "My Bot",
         "ts": int(time.time())
     }
-    updated_attachment = {
-        "color": "#36a64f",
-        "blocks": [
-            {
-                "type": "section",
-                "fields": [
-                    {
-                        "type": "mrkdwn",
-                        "text": "                                 *-            ABEL             -* \n Here's :"
-                    },
-                    {
-                        "type": "mrkdwn",
-                        "text": "                                 *-            ABEL             -* \n Here's your updated attachment:"
-                    },
-                    {
-                        "type": "mrkdwn",
-                        "text": "                                 *-            ABEL             -* \n Here's :"
-                    },
-                    {
-                        "type": "mrkdwn",
-                        "text": "                                 *-            ABEL             -* \n Here's your updated attachment:"
-                    }
-                ]
-            },
-            {
-                "type": "section",
-                "fields": [
-                    {
-                        "type": "mrkdwn",
-                        "text": "*Saturday's Report / Mar 4*\n• A2SV Development\nSync with product team\nWork on user flows related to uploading materials\nSync with Selman\n• A2SV Problem Solving\nSolve leetcode daily question"
-                    }
-                ]
-            }
-        ]
-    }
+    from app.utils import FAKE_TASKS
+    from app.models import User
+    import random
+
     response = client.chat_postMessage(
         channel="#general",
-        text="Daily Tasks Report",
-        attachments=[attachment, updated_attachment, attachment, updated_attachment]
+        attachments=build_daily_plan_attachement(
+            dev_completed=[
+                FAKE_TASKS[random.randint(0, 29)] for i in range(1)],
+            dev_not_completed=[
+                FAKE_TASKS[random.randint(0, 29)] for i in range(1)],
+            problem_solving_completed=[
+                FAKE_TASKS[random.randint(0, 29)] for i in range(2)],
+            problem_solving_not_completed=[
+                FAKE_TASKS[random.randint(0, 29)] for i in range(4)],
+            todays_development=[
+                FAKE_TASKS[random.randint(0, 29)] for i in range(3)],
+            todays_problem_solving=[
+                FAKE_TASKS[random.randint(0, 29)] for i in range(3)],
+            user=User.query.filter_by(
+                slack_id="U04LMCX3U3G").first(),
+            prev_date=datetime.datetime.now(),
+            current_date=datetime.datetime.now(),
+        )
     )
 #     ts = message["ts"]
 
