@@ -64,7 +64,7 @@ def handle_publish_daily_plan(ack, body, logger, client, context):
 
     # check if i have published a daily PLAN on this day
 
-    current_daily_plan = get_daily_plan_for_today(user=user)
+    current_daily_plan = get_daily_plan_for_today(slack_id=user.slack_id)
     attachment_tobe_published = build_daily_plan_attachement(
         dev_completed=dev_completed,
         dev_not_completed=dev_not_completed,
@@ -76,6 +76,7 @@ def handle_publish_daily_plan(ack, body, logger, client, context):
         prev_date=datetime.datetime.now(),
         current_date=datetime.datetime.now(),
     )
+
     if current_daily_plan:
         # do update operations here
         response = client.chat_update(
@@ -83,9 +84,14 @@ def handle_publish_daily_plan(ack, body, logger, client, context):
             ts=current_daily_plan.message_id,
             attachments=attachment_tobe_published
         )
-        if response['0k']:
-            current_daily_plan = update_daily_plan_tasks(current_daily_plan=current_daily_plan)
+        if response['ok']:
+            current_daily_plan = update_daily_plan_tasks(
+                current_daily_plan=current_daily_plan,
+                developments=today_development,
+                problem_solvings=today_problem_solving
+            )
             current_daily_plan.update()
+        ack()
         return
 
     response = client.chat_postMessage(
@@ -101,47 +107,11 @@ def handle_publish_daily_plan(ack, body, logger, client, context):
                 developments=today_development,
                 problem_solvings=today_problem_solving
             )
-            prev_plan = update_prev_date_state(
-                prev_plan=prev_plan, completed_task_ids=completed_task_ids)
-            prev_plan.update(commit=False)
+            if prev_plan:
+                prev_plan = update_prev_date_state(
+                    prev_plan=prev_plan, completed_task_ids=completed_task_ids)
+                prev_plan.update(commit=False)
             daily_plan.save()
         except Exception as e:
             client.chat_delete(channel=response["channel"], ts=response["ts"])
-
     return
-
-    return
-
-    import time
-    attachment = {
-        "fallback": "How is your day going so far?",
-        "title": "How is your day going so far?",
-        "text": f"Hi <@{user['id']}>, how's it going?",
-        "color": "#3AA3E3",
-        "footer": "My Bot",
-        "ts": int(time.time())
-    }
-    response = client.chat_postMessage(
-        channel="#general",
-        text="Daily Tasks Report",
-        attachments=[attachment]
-    )
-    # updated_attachment = {
-    #     "fallback": "Saturday's Report / Mar 4",
-    #     "title": "Saturday's Report / Mar 4",
-    #     "fields": [
-    #         {
-    #             "title": "A2SV Development",
-    #             "value": "Sync with product team\nWork on user flows related to uploading materials\nSync with Selman",
-    #             "short": False
-    #         },
-    #         {
-    #             "title": "A2SV Problem Solving",
-    #             "value": "Solve leetcode daily question",
-    #             "short": False
-    #         }
-    #     ],
-    #     "color": "#36a64f",
-    #     "footer": "My Bot",
-    #     "ts": event['ts']
-    # }

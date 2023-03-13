@@ -12,8 +12,8 @@
     TODO
         [x] design database schema
         [x] implement the database schema
-        [ ] what would the flow would look like
-        [ ] attachment builder based on the data
+        [x] what would the flow would look like
+        [x] attachment builder based on the data
 
     daily_plan
     daily_plan_id, user_slack_id, channel_id, datetime, message_id
@@ -122,16 +122,14 @@ def update_daily_plan_tasks(
 
 def update_prev_date_state(prev_plan: DailyPlan, completed_task_ids: set) -> DailyPlan:
     for task in prev_plan.tasks:
-        print("check", task, completed_task_ids)
         task.state = 1
         if task.id in completed_task_ids:
             task.state = 1
         else:
             task.state = 0
-        print(task.state)
     return prev_plan
 
 
-def get_daily_plan_for_today(user: User) -> Optional[DailyPlan]:
+def get_daily_plan_for_today(slack_id: str) -> Optional[DailyPlan]:
     today = date.today()
-    return DailyPlan.query.filter_by(slack_id=user.slack_id).filter(func.date(DailyPlan.time_published) == today).first()
+    return DailyPlan.query.filter_by(slack_id=slack_id).filter(func.date(DailyPlan.time_published) == today).first()

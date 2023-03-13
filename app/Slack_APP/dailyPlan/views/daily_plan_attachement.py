@@ -77,10 +77,11 @@ def build_daily_plan_attachement(
         author_icon="https://avatars.slack-edge.com/2023-03-13/4951001898961_871a4c0952e6b697c3f8_512.png",
         color="#439FE0"
     ))
-    attachments.append(date_indicator_block(
-        content="Previous Day Report",
-        date=parse_date_time(current_date, date_format="%B %d %Y")
-    ))
+    if any([dev_completed, dev_not_completed, problem_solving_completed, problem_solving_not_completed]):
+        attachments.append(date_indicator_block(
+            content="Previous Day Report",
+            date=parse_date_time(current_date, date_format="%B %d %Y")
+        ))
     if len(dev_completed):
         attachments.append(Attachment(
             color="good",
