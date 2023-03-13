@@ -74,7 +74,7 @@ def build_daily_plan_attachement(
         title=user.role,
         text=f"<@{user.slack_id}>",
         author_name=user.full_name,
-        author_icon="https://avatars.slack-edge.com/2023-03-13/4951001898961_871a4c0952e6b697c3f8_512.png",
+        author_icon=user.profile_url,
         color="#439FE0"
     ))
     if any([dev_completed, dev_not_completed, problem_solving_completed, problem_solving_not_completed]):

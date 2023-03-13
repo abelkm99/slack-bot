@@ -100,20 +100,20 @@ def handle_publish_daily_plan(ack, body, logger, client, context):
     )
 
     if response['ok']:
-        try:
-            daily_plan = create_daily_plan(
-                user=user,
-                message_id=response['ts'],
-                developments=today_development,
-                problem_solvings=today_problem_solving
-            )
-            if prev_plan:
-                prev_plan = update_prev_date_state(
-                    prev_plan=prev_plan, completed_task_ids=completed_task_ids)
-                prev_plan.update(commit=False)
-            daily_plan.save()
-            ack(response_action="update",
-                view=daily_plan_published_succesfully())
-        except Exception as e:
-            client.chat_delete(channel=response["channel"], ts=response["ts"])
+        # try:
+        daily_plan = create_daily_plan(
+            user=user,
+            message_id=response['ts'],
+            developments=today_development,
+            problem_solvings=today_problem_solving
+        )
+        if prev_plan:
+            prev_plan = update_prev_date_state(
+                prev_plan=prev_plan, completed_task_ids=completed_task_ids)
+            prev_plan.update(commit=False)
+        daily_plan.save()
+        ack(response_action="update",
+            view=daily_plan_published_succesfully())
+        # except Exception as e:
+        #     client.chat_delete(channel=response["channel"], ts=response["ts"])
     return
