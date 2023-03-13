@@ -29,9 +29,12 @@ Roles
         [ ] should we handle it on the channel or should we create a database for it
 
     [ ] Code Review, remove unhandle import mnamn
+    [ ] functions shoudl have a return and parameters should have what to expect
     [ ] refactor move all the database operations outside of the SLACK APP
     [ ] Unit Test
     
+
+
     [ ] create a new fields for profile URL and store the result to a json FILE
     [ ] handle update USER INFO
 # read more about
