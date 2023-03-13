@@ -2,6 +2,7 @@ import datetime
 import json
 
 from app.Slack_APP.dailyPlan.views.daily_plan_attachement import build_daily_plan_attachement
+from app.Slack_APP.dailyPlan.views.daily_plan_success import daily_plan_published_succesfully, daily_plan_updated_succesfully
 from app.models.daily_plan import create_daily_plan, get_daily_plan_for_today, get_previous_plan, update_daily_plan_tasks, update_prev_date_state
 from app.models.user import get_user_by_slack_id
 
@@ -56,8 +57,6 @@ def handle_publish_daily_plan(ack, body, logger, client, context):
                 completed_task_ids.add(int(task['task_id']))
             else:
                 prob_not_completed.append(task['task'])
-    # print(dev_completed, dev_not_completed, prob_completed,
-    #       prob_not_completed, today_development, today_problem_solving)
 
     user = get_user_by_slack_id(body['user']['id'])
     prev_plan = get_previous_plan(user.slack_id)
@@ -91,7 +90,8 @@ def handle_publish_daily_plan(ack, body, logger, client, context):
                 problem_solvings=today_problem_solving
             )
             current_daily_plan.update()
-        ack()
+            ack(response_action="update",
+                view=daily_plan_updated_succesfully())
         return
 
     response = client.chat_postMessage(
@@ -112,6 +112,8 @@ def handle_publish_daily_plan(ack, body, logger, client, context):
                     prev_plan=prev_plan, completed_task_ids=completed_task_ids)
                 prev_plan.update(commit=False)
             daily_plan.save()
+            ack(response_action="update",
+                view=daily_plan_published_succesfully())
         except Exception as e:
             client.chat_delete(channel=response["channel"], ts=response["ts"])
     return
