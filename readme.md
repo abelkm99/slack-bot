@@ -26,5 +26,8 @@ Roles
         [ ] should we handle it on
     [ ] refactor move all the database operations outside of the SLACK APP
     [ ] Unit Test on those functions 
+    
+    [ ] create a new fields for profile URL and store the result to a json FILE
+    [ ] handle update USER INFO
 # read more about
 [] https://apscheduler.readthedocs.io/en/3.x/userguide.html

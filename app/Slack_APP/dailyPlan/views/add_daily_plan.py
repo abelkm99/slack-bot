@@ -16,6 +16,7 @@ from slack_sdk.models.blocks import (
     ConfirmObject
 )
 from slack_sdk.models.views import View
+from slack_sdk.models.attachments import Attachment
 from app.models.daily_plan import get_previous_plan
 from app.utils import parse_date_time
 from datetime import datetime
@@ -75,32 +76,30 @@ def generate_task_drop_down_option(tasks, task_type):
     ) for task in tasks]
 
 
-development_input_block = InputBlock(
-    label=PlainTextObject(text="Development", emoji=True),
-    element=PlainTextInputElement(
-        multiline=True,
-        initial_value='''Sync with TLs
-Helped frontends with integration
-Reviewed the website we did so far and listed issues that should be added and need modifications''',
-        action_id="IGNORE"
-    ),
-    block_id=f"{unique_identifier}development_task",
-    optional=True
-)
+def get_development_input_block(todays_development=""):
+    return InputBlock(
+        label=PlainTextObject(text="Development", emoji=True),
+        element=PlainTextInputElement(
+            multiline=True,
+            todays_development=todays_development,
+            action_id="IGNORE"
+        ),
+        block_id=f"{unique_identifier}development_task",
+        optional=True
+    )
 
-problem_solving_input_block = InputBlock(
-    label=PlainTextObject(text="Development", emoji=True),
-    element=PlainTextInputElement(
-        multiline=True,
-        initial_value='''1 squid game problem and daily
-Solved 3 squid game problems
-One on one
-        ''',
-        action_id="IGNORE"
-    ),
-    block_id=f"{unique_identifier}problem_solving_tasks",
-    optional=True
-)
+
+def get_problem_solving_input_block(todays_problem_solving=""):
+    return InputBlock(
+        label=PlainTextObject(text="Development", emoji=True),
+        element=PlainTextInputElement(
+            multiline=True,
+            initial_value=todays_problem_solving,
+            action_id="IGNORE"
+        ),
+        block_id=f"{unique_identifier}problem_solving_tasks",
+        optional=True
+    )
 
 
 def get_daily_plan_view(slack_id):
@@ -110,32 +109,42 @@ def get_daily_plan_view(slack_id):
 
     development_tasks, problem_solving_tasks = [], []
 
-    for task in daily_plan.tasks:
-        if task.type == "DEVELOPMENT":
-            development_tasks.append(task)
-        else:
-            problem_solving_tasks.append(task)
+    if daily_plan:
+        for task in daily_plan.tasks:
+            if task.type == "DEVELOPMENT":
+                development_tasks.append(task)
+            else:
+                problem_solving_tasks.append(task)
     # pass the day for get_previous_header
     blocks = [
         header,
         divider,
-        get_previous_header(parse_date_time(
-            daily_plan.time_published, formater)),
-        divider,
-        development
     ]
+    if daily_plan:
+        get_previous_header(
+            parse_date_time(
+                daily_plan.time_published,
+                formater
+            )
+        ),
+
+    blocks.extend([divider,
+                   development,
+                   ])
     if len(development_tasks):
-        blocks.extend(generate_task_drop_down_option(development_tasks,"development"))
+        blocks.extend(generate_task_drop_down_option(
+            development_tasks, "development"))
     blocks.extend([divider, problem_solving])
     if len(problem_solving_tasks):
-        blocks.extend(generate_task_drop_down_option(problem_solving_tasks,"problem_solving"))
+        blocks.extend(generate_task_drop_down_option(
+            problem_solving_tasks, "problem_solving"))
     blocks.extend([
         divider,
         get_today_header(
             parse_date_time(datetime.now(), formater)
         ),
-        development_input_block,
-        problem_solving_input_block
+        get_development_input_block(),
+        get_problem_solving_input_block()
     ])
     return View(
         type="modal",

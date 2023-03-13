@@ -1,5 +1,6 @@
 from faker import Faker
 from app.models import *
+from app.utils import *
 from app import create_app
 from config import *
 import random
@@ -83,7 +84,9 @@ def create_time_sheet(count=100):
         db.session.rollback()
 
 
-def create_daily_plan(slack_id):
+def create_daily_plan(slack_id, upper_limit = 6, push_back = False):
+    if(push_back):
+        push_one_day_back()
     user = User.query.filter_by(slack_id=slack_id).first()
     dp = DailyPlan(
         slack_id=user.slack_id,
@@ -92,9 +95,9 @@ def create_daily_plan(slack_id):
         message_id = fake.word()
     )
 
-    for i in range(random.randint(2, 6)):
+    for i in range(random.randint(4, upper_limit)):
         task_types = ["DEVELOPMENT", "PROBLEM_SOLVING"]
-        dp.tasks.append(Task(task = fake.job(), type = fake.random_element(task_types)))
+        dp.tasks.append(Task(task = fake.random_element(FAKE_TASKS), type = fake.random_element(task_types)))
     dp.save()
     return dp
 def push_one_day_back():
