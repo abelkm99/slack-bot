@@ -26,30 +26,36 @@ def handel_user_registration_submission(ack, body, logger, client, context):
     # logger.info(body)
     view_state = body['view']['state']['values']
 
-    user_id = body['user']['id']
-    full_name = view_state['profile_register_full_name_input_block']['profile_register_full_name_input_action']['value']
-    role = view_state['profile_register_role_input_block']['profile_register_role_input_action']['value']
-    employment_status = view_state['profile_register_selected_employement_status_block'][
-        'profile_register_emoloyement_status_action']['selected_option']['text']['text']
-    daily_plan_channel = view_state['profile_register_daily_plan_channel_block'][
-        'profile_register_daily_plan_channel_action']['selected_conversation']
-    headsup_channel = view_state['profile_register_headsup_channel_block'][
-        'profile_register_headsup_channel_action']['selected_conversation']
-    user = get_user_by_slack_id(user_id)
-    if user:
-        user.fullname = full_name
-        user.role = role
-        user.employment_status = employment_status
-        user.daily_plan_channel = daily_plan_channel
-        user.headsup_channe = headsup_channel
-        user.save()
+    try:
+        response = client.users_info(user=body['user']['id'])
+        profile_picture = response["user"]["profile"]["image_1024"]
+        user_id = body['user']['id']
+        full_name = view_state['profile_register_full_name_input_block']['profile_register_full_name_input_action']['value']
+        role = view_state['profile_register_role_input_block']['profile_register_role_input_action']['value']
+        employment_status = view_state['profile_register_selected_employement_status_block'][
+            'profile_register_emoloyement_status_action']['selected_option']['text']['text']
+        daily_plan_channel = view_state['profile_register_daily_plan_channel_block'][
+            'profile_register_daily_plan_channel_action']['selected_conversation']
+        headsup_channel = view_state['profile_register_headsup_channel_block'][
+            'profile_register_headsup_channel_action']['selected_conversation']
+        user = get_user_by_slack_id(user_id)
+        if user:
+            user.fullname = full_name
+            user.role = role
+            user.employment_status = employment_status
+            user.daily_plan_channel = daily_plan_channel
+            user.headsup_channe = headsup_channel
+            user.profile_url = profile_picture
+            user.save()
+            ack(response_action="update",
+                view=user_registered_succesfully_view(fullname=full_name))
+            return
+
+        logger.debug([user_id, full_name, role, employment_status,
+                        daily_plan_channel, headsup_channel])
+        add_new_user(user_id, full_name, role, employment_status,
+                        daily_plan_channel, headsup_channel, profile_picture)
         ack(response_action="update",
             view=user_registered_succesfully_view(fullname=full_name))
-        return
-
-    logger.debug([user_id, full_name, role, employment_status,
-                daily_plan_channel, headsup_channel])
-    add_new_user(user_id, full_name, role, employment_status,
-                 daily_plan_channel, headsup_channel)
-    ack(response_action="update",
-        view=user_registered_succesfully_view(fullname=full_name))
+    except Exception as e:
+        logger.error(e)
