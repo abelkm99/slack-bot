@@ -86,14 +86,14 @@ def build_daily_plan_attachement(
         attachments.append(Attachment(
             color="good",
             title="Development Completed",
-            text="\n".join([f"> _{task}_" for task in dev_completed]),
+            text="\n".join([f"> •  _{task}_" for task in dev_completed]),
             markdown_in=["text"]
         ))
     if len(dev_not_completed):
         attachments.append(Attachment(
             color="#fd000e",
             title="Development Not Completed",
-            text="\n".join([f"> _{task}_" for task in dev_not_completed]),
+            text="\n".join([f"> •  _{task}_" for task in dev_not_completed]),
             markdown_in=["text"]
         ))
     if len(problem_solving_completed):
@@ -101,7 +101,7 @@ def build_daily_plan_attachement(
             color="good",
             title="Problem Solving Completed",
             text="\n".join(
-                [f"> _{task}_" for task in problem_solving_completed]),
+                [f"> •  _{task}_" for task in problem_solving_completed]),
             markdown_in=["text"]
         ))
     if len(problem_solving_not_completed):
@@ -109,7 +109,7 @@ def build_daily_plan_attachement(
             color="#fd000e",
             title="Problem Solving Not Completed",
             text="\n".join(
-                [f"> _{task}_" for task in problem_solving_not_completed]),
+                [f"> •  _{task}_" for task in problem_solving_not_completed]),
             markdown_in=["text"]
         ))
     attachments.append(date_indicator_block(
@@ -120,13 +120,13 @@ def build_daily_plan_attachement(
         color="#1414ff",
         title="Development",
         text="\n".join(
-            [f"> _{task}_" for task in todays_development]),
+            [f"> •  _{task}_" for task in todays_development]),
     ))
     attachments.append(Attachment(
         color="#ff6b00",
         title="Development",
         text="\n".join(
-            [f"> _{task}_" for task in todays_problem_solving]),
+            [f"> •  _{task}_" for task in todays_problem_solving]),
     ))
 
     return attachments
