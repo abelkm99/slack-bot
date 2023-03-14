@@ -31,6 +31,10 @@ def convert_seconds(seconds):
     return time.strftime("%H:%M:%S", t)
 
 
+FAKE_TASKS = ["Implement new user authentication flow",  "Optimize database queries for faster performance",  "Refactor legacy codebase to improve maintainability",  "Integrate with third-party API for geolocation data",  "Create automated testing suite for frontend code",  "Resolve issues with mobile responsiveness on product pages",  "Improve accessibility for users with disabilities",  "Implement multi-factor authentication for improved security",  "Add support for two-factor authentication in mobile app",  "Improve error handling and logging for better debugging",  "Create documentation for API endpoints and usage",  "Implement search functionality for internal knowledge base",  "Improve performance of image upload feature",  "Upgrade backend server to newer version of Node.js",  "Implement responsive design for email templates",
+              "Integrate with payment gateway for online transactions",  "Create custom reporting dashboard for analytics data",  "Fix bug causing data loss in user profile updates",  "Improve onboarding process for new users",  "Implement role-based access control for admin users",  "Optimize page load times for better user experience",  "Add support for OAuth2 authentication protocol",  "Create automated deployment pipeline using CI/CD tools",  "Resolve issue causing intermittent server crashes",  "Integrate with social media platforms for sharing functionality",  "Improve caching mechanisms for faster API responses",  "Implement email notification system for user actions",  "Add support for localization and internationalization",  "Upgrade frontend framework to latest version of React",  "Improve handling of high traffic periods on website"]
+
+
 def convert_time_to_string(checkIn_time):
     dt = datetime.strptime(str(checkIn_time), "%Y-%m-%d %H:%M:%S")
     formatted_dt = dt.strftime("%A, %b %d %Y, %I:%M%p")
