@@ -31,6 +31,7 @@ def handel_user_registration_submission(ack, body, logger, client, context):
         profile_picture = response["user"]["profile"]["image_1024"]
         user_id = body['user']['id']
         full_name = view_state['profile_register_full_name_input_block']['profile_register_full_name_input_action']['value']
+        
         role = view_state['profile_register_role_input_block']['profile_register_role_input_action']['value']
         employment_status = view_state['profile_register_selected_employement_status_block'][
             'profile_register_emoloyement_status_action']['selected_option']['text']['text']
@@ -40,13 +41,14 @@ def handel_user_registration_submission(ack, body, logger, client, context):
             'profile_register_headsup_channel_action']['selected_conversation']
         user = get_user_by_slack_id(user_id)
         if user:
-            user.fullname = full_name
+            print("the full name is", full_name)
+            user.full_name = full_name
             user.role = role
             user.employment_status = employment_status
             user.daily_plan_channel = daily_plan_channel
             user.headsup_channe = headsup_channel
             user.profile_url = profile_picture
-            user.save()
+            user.update()
             ack(response_action="update",
                 view=user_registered_succesfully_view(fullname=full_name))
             return
