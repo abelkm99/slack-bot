@@ -2,26 +2,33 @@ from slack_sdk.models.views import View
 from slack_sdk.models.blocks import HeaderBlock, DividerBlock, ContextBlock, SectionBlock, ImageElement, PlainTextObject, MarkdownTextObject
 import datetime
 import json
+from app.models.time_sheet import get_status
+
+from app.models.user import get_user_by_slack_id
+from app.utils import convert_time_to_string
 unique_identifier = "checkIn_Confirmation_"
 
-header = HeaderBlock(text=' :tada: You Have Successfully Check-In')
+header = HeaderBlock(text=' :tada: You Have Successfully Check-OUT')
 
 current_datetime = datetime.datetime.now().strftime("%A, %b %d %Y, %I:%M%p")
 current_date = datetime.datetime.now().strftime("%B %d, %Y")
 
-subHeader = ContextBlock(
-    block_id=f'{unique_identifier}SubHeader',
-    elements=[
-        MarkdownTextObject(
-            text=f"*{current_date} * | *Full-Time * - UI-UX Member")
-    ]
-)
+
+def subHeader(role, employement):
+    return ContextBlock(
+        block_id=f'{unique_identifier}SubHeader',
+        elements=[
+            MarkdownTextObject(
+
+                text=f"*{current_date} * | *{employement}* - {role}")
+        ]
+    )
 
 
-def body(thumbnail):
+def body(name, thumbnail, check_inTime, elasped_time):
     return SectionBlock(
         block_id=f'{unique_identifier}body',
-        text=f" *Eyouale Tensae* \n {current_datetime} \n",
+        text=f" *{name}* \n *Check-In Time* ;-  {check_inTime} \n *Check-Out Time* ;-  {current_datetime} \n *Hour Work * ;-  {elasped_time} HR",
         accessory=ImageElement(
             image_url=thumbnail,
             alt_text="user thumbnail",
@@ -43,11 +50,16 @@ footer = ContextBlock(
 )
 
 
-def get_confirmation_dialog(user):
-    # print(json.dumps(user, indent=2))
-    # response = client.users_info(user=body['user']['id'])
+def get_confirmation_dialogOUT(user, elasped_time, check_inTime):
+    slack_id = user['id']
     thumbnail = user["profile"]["image_512"]
-    # print(thumbnail)
+    # print(json.dumps(user, indent=2))
+    user = get_user_by_slack_id(slack_id)
+    name = user.full_name
+    role = user.role
+    employement = user.employement_status
+    slack_id = user.slack_id
+
     return View(
         type="modal",
         callback_id=f'{unique_identifier}view_callback',
@@ -55,8 +67,8 @@ def get_confirmation_dialog(user):
         close=PlainTextObject(text="Close", emoji=True),
         blocks=[
             header,
-            subHeader,
-            body(thumbnail),
-            footer
+            subHeader(role, employement),
+            body(name, thumbnail, check_inTime, elasped_time),
+            # footer
         ]
     )

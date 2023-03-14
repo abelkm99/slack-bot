@@ -2,12 +2,15 @@ from slack_sdk.models.views import View
 from slack_sdk.models.blocks import PlainTextObject, HeaderBlock, ContextBlock, DividerBlock, SectionBlock, StaticSelectElement, MarkdownTextObject, Option, InputBlock, ImageElement, RadioButtonsElement
 from app.models.project import Project
 import json
-import datetime
+from datetime import datetime
+from app.models.time_sheet import get_elapsed_time, get_status
+from app.models.user import get_user_by_slack_id
+from app.utils import convert_time_to_string
 
 unique_identifier = 'check-out_menu_'
 
-current_datetime = datetime.datetime.now().strftime("%A, %b %d %Y, %I:%M%p")
-current_date = datetime.datetime.now().strftime("%B %d, %Y")
+current_datetime = datetime.now().strftime("%A, %b %d %Y, %I:%M%p")
+current_date = datetime.now().strftime("%B %d, %Y")
 
 
 def header(username):
@@ -18,23 +21,26 @@ def header(username):
     )
 
 
-subHeader = ContextBlock(
-    block_id=f'{unique_identifier}SubHeader',
-    elements=[
-        MarkdownTextObject(
+def subHeader(role, employement):
+    return ContextBlock(
+        block_id=f'{unique_identifier}SubHeader',
+        elements=[
+            MarkdownTextObject(
 
-            text=f"*{current_date} * | *Full-Time * - UI-UX Member")
-    ]
-)
-
-information = SectionBlock(
-    text=" *:clipboard: For 8:00 hr you have have work in atrons project :tada: *")
+                text=f"*{current_date} * | *{employement}* - {role}")
+        ]
+    )
 
 
-def body(thumbnail):
+def information(elasped_time):
+    return SectionBlock(
+        text=f" *:clipboard: For {elasped_time} hr you have have work in atrons project :tada: *")
+
+
+def body(thumbnail, elasped_time, check_inTime):
     return SectionBlock(
         block_id=f'{unique_identifier}body',
-        text="*Check-In Time* ;-  Thursday, Oct 23 2019, 5:30am \n *Hour Work * ;-  3:00 HR",
+        text=f"*Check-In Time* ;-  {check_inTime} \n *Hour Work * ;-  {elasped_time} HR",
         accessory=ImageElement(
             image_url=thumbnail,
             alt_text="user thumbnail",
@@ -60,8 +66,8 @@ productivity_form = InputBlock(
     element=RadioButtonsElement(
         action_id=f'{unique_identifier}productivity_form',
         options=[
-            Option(text=" :star2::star2::star2::star2: ", value="1"),
-            Option(text=" :star2::star2::star2: ", value="1"),
+            Option(text=" :star2::star2::star2::star2: ", value="3"),
+            Option(text=" :star2::star2::star2: ", value="2"),
             Option(text=":sob:", value="1"),
         ]
     ),
@@ -69,8 +75,16 @@ productivity_form = InputBlock(
 
 
 def get_checkOut_form(user):
+    slack_id = user['id']
+    elasped_time = get_elapsed_time(slack_id)
     thumbnail = user["profile"]["image_512"]
-    # print(json.dumps(body, indent=2))
+    user = get_user_by_slack_id(slack_id)
+    name = user.full_name
+    role = user.role
+    employement = user.employement_status
+    slack_id = user.slack_id
+    check_inTime = convert_time_to_string(get_status(slack_id).check_in_time)
+
     return View(
         type="modal",
         callback_id=f'{unique_identifier}view_callback',
@@ -78,11 +92,11 @@ def get_checkOut_form(user):
         close=PlainTextObject(text="Cancel", emoji=True),
         submit=PlainTextObject(text="Check-out :cry:", emoji=True),
         blocks=[
-            header(user['name']),
-            subHeader,
+            header(name),
+            subHeader(role, employement),
             DividerBlock(),
-            information,
-            body(thumbnail),
+            information(elasped_time),
+            body(thumbnail, elasped_time, check_inTime),
             warning,
             DividerBlock(),
             productivity_form

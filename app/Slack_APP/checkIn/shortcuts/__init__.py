@@ -4,9 +4,10 @@ import time
 from slack_sdk.errors import SlackApiError
 from app.Slack_APP.checkIn.views import get_checkIn_form, get_checkOut_form
 
-from app.models.time_sheet import get_status, get_elapsed_time
+from app.models.time_sheet import get_status, get_elapsed_time, get_state_for_date
 from app.models.user import get_user_by_slack_id
 from app.Slack_APP.profile.views import user_registration_form
+from datetime import date
 
 
 def handle_checkIn_shortcut(ack, body, logger, client, context, shortcut):
@@ -15,23 +16,36 @@ def handle_checkIn_shortcut(ack, body, logger, client, context, shortcut):
     slack_id = body['user']['id']
     response = client.users_info(user=slack_id)
     user = response["user"]
+    # user =
     if not get_user_by_slack_id(slack_id):
         client.views_open(
             trigger_id=body['trigger_id'], view=user_registration_form(body['user']['username']))
     elif get_status(slack_id):
+        # print(get_status(slack_id))
+        # user = get_user_by_slack_id(slack_id)
+        # name = user.full_name
+        # role = user.role
+        # employement = user.employement_status
+        # slack_id = user.slack_id
         client.views_open(
             trigger_id=body['trigger_id'], view=get_checkOut_form(user))
     else:
+        user = get_user_by_slack_id(slack_id)
+        name = user.full_name
+        role = user.role
+        employement = user.employement_status
+        slack_id = user.slack_id
         client.views_open(
-            trigger_id=body['trigger_id'], view=get_checkIn_form(body))
+            trigger_id=body['trigger_id'], view=get_checkIn_form(name, role, employement, slack_id))
 
 
 def handle_checkOut_shortcut(ack, body, logger, client, context):
     # THIS TEST FUNCTION
     context['flask_app'].app_context().push()
     ack()
-
-    res = get_elapsed_time(body['user']['id'])
+    res = get_state_for_date(
+        '2022-06-10', date.today().strftime("%Y-%m-%d"), body['user']['id'],)
+    logger.info(json.dumps(res, indent=2))
     # logger.info(json.dumps({
     # "time": res}, indent=2))
     # response = client.users_info(user=body['user']['id'])

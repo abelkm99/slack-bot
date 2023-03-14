@@ -16,14 +16,16 @@ def header(username):
     )
 
 
-subHeader = ContextBlock(
-    block_id=f'{unique_identifier}SubHeader',
-    elements=[
-        MarkdownTextObject(
+def subHeader(role, employement):
+    return ContextBlock(
+        block_id=f'{unique_identifier}SubHeader',
+        elements=[
+            MarkdownTextObject(
 
-            text=f"*{current_date} * | *Full-Time * - UI-UX Member")
-    ]
-)
+                text=f"*{current_date} * | *{employement}* - {role}")
+        ]
+    )
+
 
 title = SectionBlock(
     text=" :loud_sound: *Please fill your check-checkout* :loud_sound:")
@@ -54,7 +56,7 @@ lastCheckIn = ContextBlock(
     ])
 
 
-def get_checkIn_form(body):
+def get_checkIn_form(name, role, employement, slack_id):
     # print(json.dumps(body, indent=2))
     return View(
         type="modal",
@@ -64,12 +66,12 @@ def get_checkIn_form(body):
         submit=PlainTextObject(
             text="Check in :smiley:", emoji=True),
         blocks=[
-            header(body['user']['username']),
-            subHeader,
+            header(name),
+            subHeader(role, employement),
             DividerBlock(),
             title,
             select_project(),
             DividerBlock(),
-            lastCheckIn
+            # lastCheckIn
         ]
     )

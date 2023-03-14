@@ -2,7 +2,7 @@ from datetime import datetime, time, timedelta, date
 date_format = "%Y-%m-%d %H:%M:%S"
 
 
-def parse_date_time(date_string, date_format = date_format):
+def parse_date_time(date_string, date_format=date_format):
     if isinstance(date_string, str):
         return datetime.strptime(date_string, date_format)
     return datetime.strftime(date_string, date_format)
@@ -23,8 +23,15 @@ def get_day_range(start_date, end_date):
     end_of_day = datetime.combine(end_date, time.max)
     return start_of_day, end_of_day
 
+
 def convert_seconds(seconds):
-  # Use time.gmtime() to convert seconds to a struct_time object
-  t = time.gmtime(seconds)
-  # Use time.strftime() to format the struct_time object as HH:MM:SS 
-  return time.strftime("%H:%M:%S", t)
+    # Use time.gmtime() to convert seconds to a struct_time object
+    t = time.gmtime(seconds)
+    # Use time.strftime() to format the struct_time object as HH:MM:SS
+    return time.strftime("%H:%M:%S", t)
+
+
+def convert_time_to_string(checkIn_time):
+    dt = datetime.strptime(str(checkIn_time), "%Y-%m-%d %H:%M:%S")
+    formatted_dt = dt.strftime("%A, %b %d %Y, %I:%M%p")
+    return formatted_dt
